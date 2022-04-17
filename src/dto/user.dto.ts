@@ -28,4 +28,10 @@ export class UserDto {
         ]
     })
     avatar: any[];
+
+    @ApiProperty()
+    deletedCheck: boolean;
+
+    @ApiProperty()
+    isAdmin: boolean;
 }

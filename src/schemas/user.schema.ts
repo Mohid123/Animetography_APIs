@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
+import { User } from 'src/interface/user.interface';
+import * as bcrypt from 'bcrypt';
 
 export const UserSchema = new mongoose.Schema(
     {
@@ -9,6 +11,8 @@ export const UserSchema = new mongoose.Schema(
         username: { type: String, default: '' },
         password: { type: String, default: '' },
         avatar: { type: Array, default: [] },
+        deletedCheck: { type: Boolean, default: false },
+        isAdmin: { type: Boolean, default: false }
     },
     {
         collection: 'User',
@@ -22,4 +26,13 @@ UserSchema.set('toJSON', {
   transform: function(doc, ret) {
     delete ret._id;
   },
+});
+
+UserSchema.pre<User>('save',async function(next){
+  const salt=await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+
+  this.email = this.email.toLowerCase();
+
+  next();
 });

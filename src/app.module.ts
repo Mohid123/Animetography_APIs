@@ -7,6 +7,7 @@ import { MediaUploadModule } from './modules/media-upload/media-upload.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth/auth.module';
 import config from './config';
+import { UserModule } from './modules/user/user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import config from './config';
    MongooseModule.forRoot(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }),
    MediaUploadModule,
    AuthModule.forRoot(),
+   UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

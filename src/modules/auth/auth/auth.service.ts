@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Model, Types } from 'mongoose';
 import { User } from 'src/interface/user.interface';
 import * as bcrypt from 'bcrypt';
+import { encodeImageToBlurhash } from 'src/utils/utils';
 @Injectable()
 export class AuthService {
   constructor(@InjectModel('User') private readonly _usersService: Model<User>,
@@ -57,6 +58,24 @@ export class AuthService {
       return
     }
     loginDto._id = new Types.ObjectId().toString();
+    debugger
+    const newUser = new this._usersService(loginDto);
+    if (newUser.avatar && newUser.avatar.length) {
+      debugger
+      for await (const mediaObj of newUser.avatar) {
+          await new Promise(async (resolve, reject) => {
+              try {
+                  let mediaUrl = ''
+                  mediaUrl = mediaObj.captureFileURL;
+                  mediaObj['blurHash'] = await encodeImageToBlurhash(mediaUrl);
+                  resolve({})
+              }
+              catch (err) {
+                  reject(err)
+              }
+          })
+      }
+  }
     return await new this._usersService(loginDto).save();
   }
 }

@@ -7,4 +7,6 @@ export interface User extends Document {
     username: string;
     password: string;
     avatar: any[];
+    deletedCheck: boolean;
+    isAdmin: boolean;
 }
