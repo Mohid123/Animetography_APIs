@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ApiProperty } from "@nestjs/swagger";
 
-export class MenuDto {
+export class UserDto {
     @ApiProperty()
     _id: string
 
@@ -27,5 +27,5 @@ export class MenuDto {
           }
         ]
     })
-    images: any[];
+    avatar: any[];
 }

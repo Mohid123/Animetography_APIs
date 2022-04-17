@@ -7,19 +7,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {cors: true});
 
-  const config = new DocumentBuilder()
-    .setTitle('Menu')
-    .setDescription('Menu API description')
-    .setVersion('1.0')
-    .addTag('menu')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('api', app, document);
-
-  await app.listen(3000);
-
   app.setGlobalPrefix('api');
 
   app.use(bodyParser.json({ limit: '500mb' }));
@@ -32,6 +19,19 @@ async function bootstrap() {
     preflightContinue: false,
     optionsSuccessStatus: 204
   });
-}
 
+  const config = new DocumentBuilder()
+    .setTitle('Animetography')
+    .setDescription('Animetography Apis')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('Animetography APIs')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api', app, document);
+
+  await app.listen(3000);
+}
 bootstrap();
