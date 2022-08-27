@@ -97,7 +97,8 @@ import {
     ) {
       req.setTimeout(10 * 60 * 1000);
       file['url'] =
-        'http://localhost:3000/media-upload/mediaFiles/' +
+        process.env.URL +
+        'media-upload/mediaFiles/' +
         folderName.toLowerCase() +
         '/' +
         file.filename;

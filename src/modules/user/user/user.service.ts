@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/interface/user.interface';
 import { Model } from 'mongoose';
 import { UserDto } from 'src/dto/user.dto';
+import { encodeImageToBlurhash, getDominantColor } from 'src/utils/utils';
 
 
 @Injectable()
@@ -59,13 +60,39 @@ export class UserService {
         return await this.userModel.findByIdAndRemove({_id: id});
     }
 
-    async updateUser(userDto: any) {
-        debugger
-        try {
-            return await this.userModel.updateOne({_id: userDto._id}, userDto);
+    async updateUser(user: any, userId: string) {
+        
+        const oldUser = await this.userModel.findOne({ id: userId });
+        if (!oldUser) {
+            
+          throw new NotFoundException('User not found');
         }
-        catch {
-            throw new NotFoundException('User Not Found');
+        
+        if (user.avatar && user.avatar.length) {
+          
+          user['captureFileURL'] = user.avatar[0].captureFileURL;
+          
+          for await (const mediaObj of user.avatar) {
+            await new Promise(async (resolve, reject) => {
+              try {
+                let urlMedia = '';
+                
+                urlMedia = mediaObj.captureFileURL;
+                mediaObj['blurHash'] = await encodeImageToBlurhash(urlMedia);
+                
+                resolve({});
+              } catch (err) {
+                console.log('Error', err);
+                reject(err);
+              }
+            });
+          }
         }
+        
+        await this.userModel.updateOne({ id: userId }, user);
+    
+        return {
+          message: 'User has been updated succesfully',
+        };
     }
 }

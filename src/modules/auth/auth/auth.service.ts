@@ -21,7 +21,7 @@ export class AuthService {
   }
 
     private generateToken(payload: any) {
-      debugger
+      
       return {
           access_token: `Bearer ${this.jwtService.sign(payload)}`
       }
@@ -33,13 +33,13 @@ export class AuthService {
     if(!user) {
       throw new UnauthorizedException('Incorrect Credentials')
     }
-    debugger
+    
 
     const isValidCredentials = await bcrypt.compare(loginDto.password, user.password);
-    debugger
+    
 
-    if(isValidCredentials == true) {
-      debugger
+    if(!isValidCredentials) {
+      
       throw new UnauthorizedException('Incorrect Credentials')
     }
     user = JSON.parse(JSON.stringify(user));
@@ -58,10 +58,10 @@ export class AuthService {
       return
     }
     loginDto._id = new Types.ObjectId().toString();
-    debugger
+    
     const newUser = new this._usersService(loginDto);
     if (newUser.avatar && newUser.avatar.length) {
-      debugger
+      
       for await (const mediaObj of newUser.avatar) {
           await new Promise(async (resolve, reject) => {
               try {

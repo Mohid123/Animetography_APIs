@@ -13,7 +13,7 @@ export class LoginDto{
     email: string;
 
     @ApiProperty({
-        example: 'secret password change me!',
+        example: 'qwertyuiop',
         description: 'The password of the User',
         format: 'string',
         minLength: 5,

@@ -5,9 +5,12 @@ import { Types } from 'mongoose';
 import { getColorFromURL } from 'color-thief-node';
 
 const getImageData = (image: Image) => {
+  
   const canvas = createCanvas(image.width, image.height);
   const context = canvas.getContext('2d');
+  
   context.drawImage(image, 0, 0);
+  
   return context.getImageData(0, 0, image.width, image.height);
 };
 
@@ -16,10 +19,13 @@ export const encodeImageToBlurhash = async (url) => {
   if (!isValid) {
     return '';
   }
-
+  
   url = url + '?size=compressed';
+  
   const image = await loadImage(url);
+  
   const imageData = getImageData(image);
+  
   return blurhash.encode(
     imageData.data,
     imageData.width,

@@ -11,17 +11,23 @@ export class UserController {
 
     @Get('getAllUsers')
     async getAllUsers(
-        @Query('limit') limit = 10,
-        @Query('offset') offset = 0
+        @Param('limit') limit = 10,
+        @Param('offset') offset = 0
     ) {
         const users = this.userService.getUsers(limit, offset)
         return await users;
     }
 
-    @Put('updateUser')
-    async updateUser(@Body() userDto: UserDto) {
-        debugger
-        return await this.userService.updateUser(userDto);
+    @Get('getUserByID/:userID')
+    async getUserByID(
+        @Param('userID') userID: string
+    ) {
+        return await this.userService.getUserById(userID)
+    }
+
+    @Put('updateUser/:userId')
+    async updateUser(@Body() userDto: UserDto, @Param('userId') userId: string) {
+        return await this.userService.updateUser(userDto, userId);
     }
 
     @Delete('deleteUser/:id')
