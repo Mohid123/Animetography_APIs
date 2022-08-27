@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth/auth.module';
 import config from './config';
 import { UserModule } from './modules/user/user/user.module';
+import { BlogModule } from './modules/blog/blog.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserModule } from './modules/user/user/user.module';
   }),
    MongooseModule.forRoot(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }),
    MediaUploadModule,
+   BlogModule,
    AuthModule.forRoot(),
    UserModule
   ],

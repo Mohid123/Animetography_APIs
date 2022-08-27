@@ -11,8 +11,8 @@ export class UserController {
 
     @Get('getAllUsers')
     async getAllUsers(
-        @Param('limit') limit = 10,
-        @Param('offset') offset = 0
+        @Query('limit') limit = 10,
+        @Query('offset') offset = 0
     ) {
         const users = this.userService.getUsers(limit, offset)
         return await users;
