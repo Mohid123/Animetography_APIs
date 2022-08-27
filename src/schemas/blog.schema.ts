@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
-import { User } from 'src/interface/user.interface';
+import { Blog } from 'src/interface/blog.interface';
 
 export const BlogSchema = new mongoose.Schema(
     {
@@ -22,7 +22,13 @@ BlogSchema.set('timestamps', true);
 BlogSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
-  transform: function(doc, ret) {
+  transform: function (doc, ret) {
     delete ret._id;
   },
+});
+
+mongoose.model('blog', BlogSchema);
+
+BlogSchema.pre<Blog>('save', async function (next) {
+  next();
 });

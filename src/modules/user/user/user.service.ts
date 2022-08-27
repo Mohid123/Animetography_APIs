@@ -23,7 +23,7 @@ export class UserService {
         })
     }
 
-    async getUsers(limit, offset) {
+    async getUsers(offset, limit) {
         try {
             limit = parseInt(limit) < 1 ? 10 : limit;
             offset = parseInt(offset) < 0 ? 0 : offset;

@@ -9,7 +9,7 @@ import { encodeImageToBlurhash } from 'src/utils/utils';
 export class BlogService {
     constructor(@InjectModel('Blog') private readonly blogModel: Model<Blog>) {}
 
-   async getAllBlogs(limit: any, offset: any) {
+   async getAllBlogs(offset, limit) {
         try {
             limit = parseInt(limit) < 1 ? 10 : limit;
             offset = parseInt(offset) < 0 ? 0 : offset;

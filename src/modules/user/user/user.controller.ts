@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -11,10 +12,10 @@ export class UserController {
 
     @Get('getAllUsers')
     async getAllUsers(
-        @Query('limit') limit = 10,
-        @Query('offset') offset = 0
+        @Query('limit') limit: number = 10,
+        @Query('offset') offset: number = 0
     ) {
-        const users = this.userService.getUsers(limit, offset)
+        const users = this.userService.getUsers(offset, limit)
         return await users;
     }
 

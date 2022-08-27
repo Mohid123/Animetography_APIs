@@ -1,22 +1,23 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { shareReplay, take } from 'rxjs';
 import { BlogDto } from 'src/dto/blog.dto';
-import { Blog } from 'src/interface/blog.interface';
+import { JwtAuthGuard } from '../auth/auth/jwt-auth.guard';
 import { BlogService } from './blog.service';
 
-@ApiTags('Blogs')
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
+@ApiTags('Blogs')
 @Controller('blog')
 export class BlogController {
     constructor(private readonly blogService: BlogService) {}
     @Get('getAllBlogs')
     async getAllBlogs(
-        @Query('limit') limit = 10,
-        @Query('offset') offset = 0
+        @Query('limit') limit: number = 10,
+        @Query('offset') offset: number = 0
     ) {
-        return await this.blogService.getAllBlogs(limit, offset)
+        return await this.blogService.getAllBlogs(offset, limit)
     }
 
     @Get('getBlogByID/:blogID')
