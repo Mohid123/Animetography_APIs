@@ -36,4 +36,9 @@ export class BlogController {
     async updateBlogPost(@Body() blogDto: BlogDto, @Param('blogID') blogID: string) {
         return await this.blogService.updateBlog(blogDto, blogID)
     }
+
+    @Post('deleteBlogPost/:blogID') 
+    async deleteBlogPost(@Param('blogID') blogID: string) {
+        return await this.blogService.deleteBlogPost(blogID);
+    }
 }

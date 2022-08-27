@@ -124,4 +124,8 @@ export class BlogService {
           message: 'Blog has been updated succesfully',
         };
     }
+
+    async deleteBlogPost(id: string) {
+        return await this.blogModel.updateOne({ _id: id }, { deletedCheck: true })
+    }
 }

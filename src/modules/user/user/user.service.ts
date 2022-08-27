@@ -57,7 +57,7 @@ export class UserService {
     }
 
     async removeUser(id: string) {
-        return await this.userModel.findByIdAndRemove({_id: id});
+        return await this.userModel.updateOne({ _id: id }, { deletedCheck: true })
     }
 
     async updateUser(user: any, userId: string) {

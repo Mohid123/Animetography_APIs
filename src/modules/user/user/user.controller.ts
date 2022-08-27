@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
@@ -30,7 +30,7 @@ export class UserController {
         return await this.userService.updateUser(userDto, userId);
     }
 
-    @Delete('deleteUser/:id')
+    @Post('deleteUser/:id')
     async deleteUserPermanently(@Param('id') id: string) {
         return await this.userService.removeUser(id);
     }
