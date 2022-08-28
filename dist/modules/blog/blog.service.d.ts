@@ -1,5 +1,5 @@
 import { Blog } from 'src/interface/blog.interface';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 export declare class BlogService {
     private readonly blogModel;
     constructor(blogModel: Model<Blog>);
@@ -8,10 +8,10 @@ export declare class BlogService {
         totalCount: number;
     }>;
     addBlog(blog: any): Promise<Blog & {
-        _id: any;
+        _id: Types.ObjectId;
     }>;
     getBlogByID(id: string): Promise<Blog & {
-        _id: any;
+        _id: Types.ObjectId;
     }>;
     updateBlog(blog: any, blogId: string): Promise<{
         message: string;
