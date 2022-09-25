@@ -3,9 +3,11 @@ export declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, a
     email: string;
     password: string;
     _id: string;
-    fullName: string;
+    firstName: string;
+    lastName: string;
     username: string;
     avatar: any[];
     deletedCheck: boolean;
     isAdmin: boolean;
+    isWriter: boolean;
 }>;

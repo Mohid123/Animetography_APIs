@@ -20,7 +20,11 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], UserDto.prototype, "fullName", void 0);
+], UserDto.prototype, "firstName", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UserDto.prototype, "lastName", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
@@ -52,5 +56,9 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Boolean)
 ], UserDto.prototype, "isAdmin", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], UserDto.prototype, "isWriter", void 0);
 exports.UserDto = UserDto;
 //# sourceMappingURL=user.dto.js.map
