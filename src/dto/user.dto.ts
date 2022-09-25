@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/ban-types */
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -7,7 +9,10 @@ export class UserDto {
     _id: string
 
     @ApiProperty()
-    fullName: string
+    firstName: string
+
+    @ApiProperty()
+    lastName: string
 
     @ApiProperty()
     email: string;
@@ -34,4 +39,7 @@ export class UserDto {
 
     @ApiProperty()
     isAdmin: boolean;
+
+    @ApiProperty()
+    isWriter: boolean;
 }

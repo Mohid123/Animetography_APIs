@@ -6,13 +6,15 @@ import * as bcrypt from 'bcrypt';
 export const UserSchema = new mongoose.Schema(
     {
         _id: { type: String, default: '' },
-        fullName: { type: String, default: '' },
+        firstName: { type: String, default: '' },
+        lastName: { type: String, default: '' },
         email: { type: String, default: '' },
         username: { type: String, default: '' },
         password: { type: String, default: '' },
         avatar: { type: Array, default: [] },
         deletedCheck: { type: Boolean, default: false },
-        isAdmin: { type: Boolean, default: false }
+        isAdmin: { type: Boolean, default: false },
+        isWriter: { type: Boolean, default: false }
     },
     {
         collection: 'User',
