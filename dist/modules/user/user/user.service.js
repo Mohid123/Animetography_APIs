@@ -116,15 +116,11 @@ let UserService = class UserService {
     async resetPassword(userDto, email) {
         try {
             const oldEmail = await this.userModel.findOne({ email: email, deletedCheck: false });
-            debugger;
             if (oldEmail.email && oldEmail.email !== "") {
-                debugger;
                 const encryptedPassword = await bcrypt.hash(userDto.password, 12);
-                debugger;
                 await this.userModel.findByIdAndUpdate(oldEmail.id, {
                     password: encryptedPassword,
                 });
-                debugger;
                 return { message: "Password reset successfully" };
             }
             else {
