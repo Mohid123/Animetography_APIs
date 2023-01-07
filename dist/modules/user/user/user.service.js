@@ -115,14 +115,11 @@ let UserService = class UserService {
     }
     async resetPassword(userDto, email) {
         try {
-            debugger;
             const oldEmail = await this.userModel.findOne({ email: email, deletedCheck: false });
             if (!oldEmail || oldEmail == null) {
-                debugger;
                 return { message: "Email does not exist" };
             }
             else {
-                debugger;
                 if (oldEmail.email && oldEmail.email !== "") {
                     const encryptedPassword = await bcrypt.hash(userDto.password, 12);
                     await this.userModel.findByIdAndUpdate(oldEmail.id, {
