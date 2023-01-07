@@ -102,22 +102,26 @@ export class UserService {
     async resetPassword(userDto: any, email: string) {
        try {
         const oldEmail = await this.userModel.findOne({ email: email, deletedCheck: false });
-        
-        if(oldEmail.email && oldEmail.email !== "") {
-            
-            const encryptedPassword = await bcrypt.hash(
-                userDto.password,
-                12,
-            );
-            
-            await this.userModel.findByIdAndUpdate(oldEmail.id, {
-                password: encryptedPassword,
-            });
-            
-            return {message: "Password reset successfully"}
+        if(!oldEmail || oldEmail == null) {
+            return { message: "Email does not exist"}
         }
         else {
-            return { message: "Failed to reset Password"}
+            if(oldEmail.email && oldEmail.email !== "") {
+            
+                const encryptedPassword = await bcrypt.hash(
+                    userDto.password,
+                    12,
+                );
+                
+                await this.userModel.findByIdAndUpdate(oldEmail.id, {
+                    password: encryptedPassword,
+                });
+                
+                return {message: "Password reset successfully"}
+            }
+            else {
+                return { message: "Failed to reset Password"}
+            }
         }
        }
        catch (err) {
