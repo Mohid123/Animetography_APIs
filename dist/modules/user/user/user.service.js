@@ -24,6 +24,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const utils_1 = require("../../../utils/utils");
+const bcrypt = require("bcrypt");
 let UserService = class UserService {
     constructor(userModel) {
         this.userModel = userModel;
@@ -111,6 +112,28 @@ let UserService = class UserService {
         return {
             message: 'User has been updated succesfully',
         };
+    }
+    async resetPassword(userDto, email) {
+        try {
+            const oldEmail = await this.userModel.findOne({ email: email, deletedCheck: false });
+            debugger;
+            if (oldEmail.email && oldEmail.email !== "") {
+                debugger;
+                const encryptedPassword = await bcrypt.hash(userDto.password, 12);
+                debugger;
+                await this.userModel.findByIdAndUpdate(oldEmail.id, {
+                    password: encryptedPassword,
+                });
+                debugger;
+                return { message: "Password reset successfully" };
+            }
+            else {
+                return { message: "Failed to reset Password" };
+            }
+        }
+        catch (err) {
+            throw new common_1.HttpException(err.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
 };
 UserService = __decorate([

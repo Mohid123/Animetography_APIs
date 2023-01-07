@@ -34,6 +34,9 @@ let UserController = class UserController {
     async deleteUserPermanently(id) {
         return await this.userService.removeUser(id);
     }
+    async resetUserPassword(userDto, email) {
+        return await this.userService.resetPassword(userDto, email);
+    }
 };
 __decorate([
     (0, common_1.Get)('getAllUsers'),
@@ -65,6 +68,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUserPermanently", null);
+__decorate([
+    (0, common_1.Post)('resetPassword/:email'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_dto_1.UserDto, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "resetUserPassword", null);
 UserController = __decorate([
     (0, swagger_1.ApiTags)('Users'),
     (0, swagger_1.ApiBearerAuth)(),

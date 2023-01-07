@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import {ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/interface/user.interface';
 import { Model } from 'mongoose';
+import { encodeImageToBlurhash } from 'src/utils/utils';
+import * as bcrypt from 'bcrypt';
+import { ResetPasswordDto } from 'src/dto/resetPassword.dto';
 import { UserDto } from 'src/dto/user.dto';
-import { encodeImageToBlurhash, getDominantColor } from 'src/utils/utils';
 
 
 @Injectable()
@@ -94,5 +97,31 @@ export class UserService {
         return {
           message: 'User has been updated succesfully',
         };
+    }
+
+    async resetPassword(userDto: any, email: string) {
+       try {
+        const oldEmail = await this.userModel.findOne({ email: email, deletedCheck: false });
+        
+        if(oldEmail.email && oldEmail.email !== "") {
+            
+            const encryptedPassword = await bcrypt.hash(
+                userDto.password,
+                12,
+            );
+            
+            await this.userModel.findByIdAndUpdate(oldEmail.id, {
+                password: encryptedPassword,
+            });
+            
+            return {message: "Password reset successfully"}
+        }
+        else {
+            return { message: "Failed to reset Password"}
+        }
+       }
+       catch (err) {
+        throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+       }
     }
 }

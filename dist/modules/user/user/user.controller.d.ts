@@ -12,4 +12,7 @@ export declare class UserController {
         message: string;
     }>;
     deleteUserPermanently(id: string): Promise<import("mongodb").UpdateResult>;
+    resetUserPassword(userDto: UserDto, email: string): Promise<{
+        message: string;
+    }>;
 }

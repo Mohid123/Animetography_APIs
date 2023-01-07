@@ -13,4 +13,7 @@ export declare class UserService {
     updateUser(user: any, userId: string): Promise<{
         message: string;
     }>;
+    resetPassword(userDto: any, email: string): Promise<{
+        message: string;
+    }>;
 }

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ResetPasswordDto } from 'src/dto/resetPassword.dto';
 import { UserDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
 @ApiTags('Users')
@@ -34,5 +35,10 @@ export class UserController {
     @Post('deleteUser/:id')
     async deleteUserPermanently(@Param('id') id: string) {
         return await this.userService.removeUser(id);
+    }
+
+    @Post('resetPassword/:email')
+    async resetUserPassword(@Body() userDto: UserDto, @Param('email') email: string) {
+        return await this.userService.resetPassword(userDto, email);
     }
 }
