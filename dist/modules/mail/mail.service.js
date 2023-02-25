@@ -31,7 +31,7 @@ let MailService = class MailService {
             return response;
         })
             .catch((err) => {
-            throw err;
+            throw new common_1.BadRequestException(err);
         });
     }
 };
