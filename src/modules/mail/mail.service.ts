@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { MailerService } from '@nestjs-modules/mailer/dist/mailer.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { response } from 'express';
 import { User } from 'src/interface/user.interface';
 
@@ -24,7 +24,7 @@ export class MailService {
             return response
         })
         .catch((err: any) => {
-            throw err
+            throw new BadRequestException(err)
         });
       }
 }
