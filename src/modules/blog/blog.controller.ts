@@ -14,6 +14,7 @@ import { BlogService } from './blog.service';
 export class BlogController {
     constructor(private readonly blogService: BlogService) {}
     @Get('getAllBlogs')
+    @UseGuards(JwtAuthGuard)
     async getAllBlogs(
         @Query('limit') limit: number = 10,
         @Query('offset') offset: number = 0
@@ -22,6 +23,7 @@ export class BlogController {
     }
 
     @Get('getBlogByID/:blogID')
+    @UseGuards(JwtAuthGuard)
     async getBlogById(
         @Param('blogID') blogID: string
     ) {
@@ -29,22 +31,26 @@ export class BlogController {
     }
 
     @Post('addBlogPost')
+    @UseGuards(JwtAuthGuard)
     async addBlogPost(@Body() blogDto: BlogDto) {
         const newBlog = await this.blogService.addBlog(blogDto)
         return newBlog
     }
 
     @Put('updateBlogPost/:blogID')
+    @UseGuards(JwtAuthGuard)
     async updateBlogPost(@Body() blogDto: BlogDto, @Param('blogID') blogID: string) {
         return await this.blogService.updateBlog(blogDto, blogID)
     }
 
-    @Post('deleteBlogPost/:blogID') 
+    @Post('deleteBlogPost/:blogID')
+    @UseGuards(JwtAuthGuard)
     async deleteBlogPost(@Param('postID') postID: string) {
         return await this.blogService.deleteBlogPost(postID);
     }
 
     @Delete('deletePostPermanently/:id')
+    @UseGuards(JwtAuthGuard)
     async deletePermanently(@Param('postID') postID: string) {
         return await this.blogService.deletePostPermanently(postID);
     }
