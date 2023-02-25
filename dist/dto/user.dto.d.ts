@@ -9,4 +9,5 @@ export declare class UserDto {
     deletedCheck: boolean;
     isAdmin: boolean;
     isWriter: boolean;
+    isVerified: boolean;
 }

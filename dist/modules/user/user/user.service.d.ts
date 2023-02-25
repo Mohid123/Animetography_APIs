@@ -8,7 +8,7 @@ export declare class UserService {
         data: any[];
         totalCount: number;
     }>;
-    deleteUser(id: string): Promise<import("mongodb").UpdateResult>;
+    deleteUser(id: string): Promise<import("mongodb").DeleteResult>;
     removeUser(id: string): Promise<import("mongodb").UpdateResult>;
     updateUser(user: any, userId: string): Promise<{
         message: string;

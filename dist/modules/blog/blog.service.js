@@ -102,7 +102,7 @@ let BlogService = class BlogService {
                 return result;
             }
             else {
-                throw new common_1.BadRequestException('Failed to Create menu');
+                throw new common_1.BadRequestException('Failed to create new post!');
             }
         }).catch((err) => {
             throw new common_1.BadRequestException(err);
@@ -157,6 +157,9 @@ let BlogService = class BlogService {
     }
     async deleteBlogPost(id) {
         return await this.blogModel.updateOne({ _id: id }, { deletedCheck: true });
+    }
+    async deletePostPermanently(id) {
+        return await this.blogModel.deleteOne({ _id: id });
     }
 };
 BlogService = __decorate([

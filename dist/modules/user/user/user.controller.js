@@ -31,8 +31,11 @@ let UserController = class UserController {
     async updateUser(userDto, userId) {
         return await this.userService.updateUser(userDto, userId);
     }
-    async deleteUserPermanently(id) {
+    async removeUser(id) {
         return await this.userService.removeUser(id);
+    }
+    async deleteUserPermanently(id) {
+        return await this.userService.deleteUser(id);
     }
     async resetUserPassword(userDto, email) {
         return await this.userService.resetPassword(userDto, email);
@@ -63,6 +66,13 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Post)('deleteUser/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "removeUser", null);
+__decorate([
+    (0, common_1.Delete)('deleteUserPermanently/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

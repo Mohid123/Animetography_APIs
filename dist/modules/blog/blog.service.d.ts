@@ -17,4 +17,5 @@ export declare class BlogService {
         message: string;
     }>;
     deleteBlogPost(id: string): Promise<import("mongodb").UpdateResult>;
+    deletePostPermanently(id: string): Promise<import("mongodb").DeleteResult>;
 }

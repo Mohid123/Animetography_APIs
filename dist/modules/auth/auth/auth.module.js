@@ -16,6 +16,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const user_schema_1 = require("../../../schemas/user.schema");
 const jwt_strategy_1 = require("../jwt-strategy");
 const config_1 = require("../../../config");
+const mail_module_1 = require("../../mail/mail.module");
 let AuthModule = AuthModule_1 = class AuthModule {
     static forRoot() {
         return {
@@ -24,7 +25,8 @@ let AuthModule = AuthModule_1 = class AuthModule {
                     secret: config_1.default.SECRET_KEY,
                     signOptions: { expiresIn: '99999999s' }
                 }),
-                mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_schema_1.UserSchema }])
+                mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_schema_1.UserSchema }]),
+                mail_module_1.MailModule
             ],
             controllers: [auth_controller_1.AuthController],
             providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],

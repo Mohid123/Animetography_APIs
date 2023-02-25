@@ -35,8 +35,11 @@ let BlogController = class BlogController {
     async updateBlogPost(blogDto, blogID) {
         return await this.blogService.updateBlog(blogDto, blogID);
     }
-    async deleteBlogPost(blogID) {
-        return await this.blogService.deleteBlogPost(blogID);
+    async deleteBlogPost(postID) {
+        return await this.blogService.deleteBlogPost(postID);
+    }
+    async deletePermanently(postID) {
+        return await this.blogService.deletePostPermanently(postID);
     }
 };
 __decorate([
@@ -71,11 +74,18 @@ __decorate([
 ], BlogController.prototype, "updateBlogPost", null);
 __decorate([
     (0, common_1.Post)('deleteBlogPost/:blogID'),
-    __param(0, (0, common_1.Param)('blogID')),
+    __param(0, (0, common_1.Param)('postID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "deleteBlogPost", null);
+__decorate([
+    (0, common_1.Delete)('deletePostPermanently/:id'),
+    __param(0, (0, common_1.Param)('postID')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "deletePermanently", null);
 BlogController = __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),

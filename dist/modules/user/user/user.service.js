@@ -70,7 +70,7 @@ let UserService = class UserService {
         }
     }
     async deleteUser(id) {
-        return await this.userModel.updateOne({ _id: id }, { deletedCheck: true });
+        return await this.userModel.deleteOne({ _id: id });
     }
     async removeUser(id) {
         return await this.userModel.updateOne({ _id: id }, { deletedCheck: true });

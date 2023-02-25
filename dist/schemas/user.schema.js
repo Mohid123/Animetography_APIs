@@ -13,7 +13,8 @@ exports.UserSchema = new mongoose.Schema({
     avatar: { type: Array, default: [] },
     deletedCheck: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
-    isWriter: { type: Boolean, default: false }
+    isWriter: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false }
 }, {
     collection: 'User',
 });

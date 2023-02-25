@@ -10,4 +10,5 @@ export interface User extends Document {
     deletedCheck: boolean;
     isAdmin: boolean;
     isWriter: boolean;
+    isVerified: boolean;
 }

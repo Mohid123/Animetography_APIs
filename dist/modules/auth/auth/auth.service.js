@@ -26,10 +26,12 @@ const jwt_1 = require("@nestjs/jwt");
 const mongoose_2 = require("mongoose");
 const bcrypt = require("bcrypt");
 const utils_1 = require("../../../utils/utils");
+const mail_service_1 = require("../../mail/mail.service");
 let AuthService = class AuthService {
-    constructor(_usersService, jwtService) {
+    constructor(_usersService, jwtService, mailService) {
         this._usersService = _usersService;
         this.jwtService = jwtService;
+        this.mailService = mailService;
     }
     async loginToken() {
         const userData = {
@@ -63,7 +65,6 @@ let AuthService = class AuthService {
         const user = await this._usersService.findOne({ email: loginDto.email });
         if (user) {
             throw new common_1.ForbiddenException('Email already exists');
-            return;
         }
         loginDto._id = new mongoose_2.Types.ObjectId().toString();
         const newUser = new this._usersService(loginDto);
@@ -92,14 +93,29 @@ let AuthService = class AuthService {
                 finally { if (e_1) throw e_1.error; }
             }
         }
+        if (newUser.isWriter === true) {
+            newUser.isWriter = false;
+            const token = Math.floor(1000 + Math.random() * 9000).toString();
+            await this.mailService.sendUserConfirmation(newUser, token);
+        }
         return await new this._usersService(loginDto).save();
+    }
+    async confirmEmailAdress(email) {
+        const user = await this._usersService.findOne({ email: email, deletedCheck: false });
+        if (!user) {
+            throw new common_1.NotFoundException('User does not exist');
+        }
+        user.isWriter = true;
+        user.isVerified = true;
+        return await this._usersService.updateOne({ email: email }, user);
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('User')),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        mail_service_1.MailService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

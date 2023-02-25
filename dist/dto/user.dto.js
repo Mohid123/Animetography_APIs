@@ -60,5 +60,9 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Boolean)
 ], UserDto.prototype, "isWriter", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], UserDto.prototype, "isVerified", void 0);
 exports.UserDto = UserDto;
 //# sourceMappingURL=user.dto.js.map

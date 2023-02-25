@@ -10,4 +10,5 @@ export declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, a
     deletedCheck: boolean;
     isAdmin: boolean;
     isWriter: boolean;
+    isVerified: boolean;
 }>;

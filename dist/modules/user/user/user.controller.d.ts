@@ -11,7 +11,8 @@ export declare class UserController {
     updateUser(userDto: UserDto, userId: string): Promise<{
         message: string;
     }>;
-    deleteUserPermanently(id: string): Promise<import("mongodb").UpdateResult>;
+    removeUser(id: string): Promise<import("mongodb").UpdateResult>;
+    deleteUserPermanently(id: string): Promise<import("mongodb").DeleteResult>;
     resetUserPassword(userDto: UserDto, email: string): Promise<{
         message: string;
     }>;
