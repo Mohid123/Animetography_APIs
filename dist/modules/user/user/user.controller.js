@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const user_dto_1 = require("../../../dto/user.dto");
+const jwt_auth_guard_1 = require("../../auth/auth/jwt-auth.guard");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService) {
@@ -43,6 +44,7 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)('getAllUsers'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('limit')),
     __param(1, (0, common_1.Query)('offset')),
     __metadata("design:type", Function),
@@ -51,6 +53,7 @@ __decorate([
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.Get)('getUserByID/:userID'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('userID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -58,6 +61,7 @@ __decorate([
 ], UserController.prototype, "getUserByID", null);
 __decorate([
     (0, common_1.Put)('updateUser/:userId'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
@@ -66,6 +70,7 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Post)('deleteUser/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -73,6 +78,7 @@ __decorate([
 ], UserController.prototype, "removeUser", null);
 __decorate([
     (0, common_1.Delete)('deleteUserPermanently/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -80,6 +86,7 @@ __decorate([
 ], UserController.prototype, "deleteUserPermanently", null);
 __decorate([
     (0, common_1.Post)('resetPassword/:email'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('email')),
     __metadata("design:type", Function),
