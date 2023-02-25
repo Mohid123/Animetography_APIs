@@ -44,6 +44,7 @@ let BlogController = class BlogController {
 };
 __decorate([
     (0, common_1.Get)('getAllBlogs'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('limit')),
     __param(1, (0, common_1.Query)('offset')),
     __metadata("design:type", Function),
@@ -52,6 +53,7 @@ __decorate([
 ], BlogController.prototype, "getAllBlogs", null);
 __decorate([
     (0, common_1.Get)('getBlogByID/:blogID'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('blogID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -59,6 +61,7 @@ __decorate([
 ], BlogController.prototype, "getBlogById", null);
 __decorate([
     (0, common_1.Post)('addBlogPost'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [blog_dto_1.BlogDto]),
@@ -66,6 +69,7 @@ __decorate([
 ], BlogController.prototype, "addBlogPost", null);
 __decorate([
     (0, common_1.Put)('updateBlogPost/:blogID'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('blogID')),
     __metadata("design:type", Function),
@@ -74,6 +78,7 @@ __decorate([
 ], BlogController.prototype, "updateBlogPost", null);
 __decorate([
     (0, common_1.Post)('deleteBlogPost/:blogID'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('postID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -81,6 +86,7 @@ __decorate([
 ], BlogController.prototype, "deleteBlogPost", null);
 __decorate([
     (0, common_1.Delete)('deletePostPermanently/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('postID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
