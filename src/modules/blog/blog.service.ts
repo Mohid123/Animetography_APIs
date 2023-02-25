@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -72,7 +73,7 @@ export class BlogService {
                 return result
             }
             else {
-                throw new BadRequestException('Failed to Create menu')
+                throw new BadRequestException('Failed to create new post!')
             }
         }).catch((err) => {
             throw new BadRequestException(err)
@@ -127,5 +128,9 @@ export class BlogService {
 
     async deleteBlogPost(id: string) {
         return await this.blogModel.updateOne({ _id: id }, { deletedCheck: true })
+    }
+
+    async deletePostPermanently(id: string) {
+        return await this.blogModel.deleteOne({ _id: id });
     }
 }

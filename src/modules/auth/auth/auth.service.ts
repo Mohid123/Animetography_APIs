@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model, Types } from 'mongoose';
 import { User } from 'src/interface/user.interface';
 import * as bcrypt from 'bcrypt';
 import { encodeImageToBlurhash } from 'src/utils/utils';
+import { MailService } from 'src/modules/mail/mail.service';
 @Injectable()
 export class AuthService {
   constructor(@InjectModel('User') private readonly _usersService: Model<User>,
-    private jwtService: JwtService) {}
+    private jwtService: JwtService,
+    private mailService: MailService
+  ) {}
 
   async loginToken() {
     const userData = {
@@ -20,34 +24,24 @@ export class AuthService {
     return this.generateToken(userData)
   }
 
-    private generateToken(payload: any) {
-      
-      return {
-          access_token: `Bearer ${this.jwtService.sign(payload)}`
-      }
+  private generateToken(payload: any) {
+    return {
+      access_token: `Bearer ${this.jwtService.sign(payload)}`
+    }
   }
 
   async login(loginDto: any) {
     let user  = await this._usersService.findOne({email: loginDto.email});
-
     if(!user) {
       throw new UnauthorizedException('Incorrect Credentials')
     }
-    
-
     const isValidCredentials = await bcrypt.compare(loginDto.password, user.password);
-    
-
     if(!isValidCredentials) {
-      
       throw new UnauthorizedException('Incorrect Credentials')
     }
     user = JSON.parse(JSON.stringify(user));
-
     delete user.password;
-
     const token = this.generateToken(user);
-
     return { user, token: token.access_token};
   }
 
@@ -55,13 +49,10 @@ export class AuthService {
     const user = await this._usersService.findOne({ email: loginDto.email });
     if(user) {
       throw new ForbiddenException('Email already exists');
-      return
     }
     loginDto._id = new Types.ObjectId().toString();
-    
     const newUser = new this._usersService(loginDto);
     if (newUser.avatar && newUser.avatar.length) {
-      
       for await (const mediaObj of newUser.avatar) {
           await new Promise(async (resolve, reject) => {
               try {
@@ -75,7 +66,22 @@ export class AuthService {
               }
           })
       }
-  }
+    }
+    if(newUser.isWriter === true) {
+      newUser.isWriter = false;
+      const token = Math.floor(1000 + Math.random() * 9000).toString();
+      await this.mailService.sendUserConfirmation(newUser, token);
+    }
     return await new this._usersService(loginDto).save();
+  }
+
+  async confirmEmailAdress(email: string) {
+    const user = await this._usersService.findOne({ email: email, deletedCheck: false });
+    if(!user) {
+      throw new NotFoundException('User does not exist')
+    }
+    user.isWriter = true;
+    user.isVerified = true;
+    return await this._usersService.updateOne({email: email}, user);
   }
 }

@@ -56,7 +56,7 @@ export class UserService {
     }
 
     async deleteUser (id: string) {
-        return await this.userModel.updateOne({_id: id} , {deletedCheck: true});
+        return await this.userModel.deleteOne({_id: id});
     }
 
     async removeUser(id: string) {

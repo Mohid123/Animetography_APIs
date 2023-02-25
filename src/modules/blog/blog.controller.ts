@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BlogDto } from 'src/dto/blog.dto';
 import { JwtAuthGuard } from '../auth/auth/jwt-auth.guard';
@@ -39,7 +40,12 @@ export class BlogController {
     }
 
     @Post('deleteBlogPost/:blogID') 
-    async deleteBlogPost(@Param('blogID') blogID: string) {
-        return await this.blogService.deleteBlogPost(blogID);
+    async deleteBlogPost(@Param('postID') postID: string) {
+        return await this.blogService.deleteBlogPost(postID);
+    }
+
+    @Delete('deletePostPermanently/:id')
+    async deletePermanently(@Param('postID') postID: string) {
+        return await this.blogService.deletePostPermanently(postID);
     }
 }

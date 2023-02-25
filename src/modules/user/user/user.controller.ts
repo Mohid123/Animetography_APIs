@@ -33,8 +33,13 @@ export class UserController {
     }
 
     @Post('deleteUser/:id')
-    async deleteUserPermanently(@Param('id') id: string) {
+    async removeUser(@Param('id') id: string) {
         return await this.userService.removeUser(id);
+    }
+
+    @Delete('deleteUserPermanently/:id')
+    async deleteUserPermanently(@Param('id') id: string) {
+        return await this.userService.deleteUser(id)
     }
 
     @Post('resetPassword/:email')

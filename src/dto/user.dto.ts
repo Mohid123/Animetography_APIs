@@ -42,4 +42,7 @@ export class UserDto {
 
     @ApiProperty()
     isWriter: boolean;
+
+    @ApiProperty()
+    isVerified: boolean;
 }
