@@ -46,7 +46,6 @@ export class AuthService {
   }
 
   async signup(loginDto: any) {
-    debugger
     const user = await this._usersService.findOne({ email: loginDto.email });
     if(user) {
       throw new ForbiddenException('Email already exists');
@@ -76,14 +75,14 @@ export class AuthService {
     return await new this._usersService(loginDto).save();
   }
 
-  async confirmEmailAdress(confirmationDto: any) {
-    const user = await this._usersService.findOne({ id: confirmationDto.id }, {deletedCheck: false});
-    if(!user) {
+  async confirmEmailAdress(id: string, user: any) {
+    const oldUser = await this._usersService.findOne({ id: id }, {deletedCheck: false});
+    if(!oldUser) {
       throw new NotFoundException('User does not exist')
     }
     user.isWriter = true;
     user.isVerified = true;
-    await this._usersService.updateOne({id: confirmationDto.id}, user);
+    await this._usersService.updateOne({id: id}, user);
     return {message: 'Your account is now verified. You will now have access to Writer privileges'}
   }
 }

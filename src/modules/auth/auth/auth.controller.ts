@@ -33,8 +33,8 @@ export class AuthController {
         return this.authService.signup(signupDto);
     }
 
-    @Post('confirmEmail')
-    async confirmEmail(@Body() confirmationDto: ConfirmationDto) {
-        return await this.authService.confirmEmailAdress(confirmationDto);
+    @Post('confirmEmail/:id')
+    async confirmEmail(@Body() user: UserDto, @Param('id') id: string) {
+        return await this.authService.confirmEmailAdress(id, user);
     }
 }
