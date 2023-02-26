@@ -107,7 +107,7 @@ let AuthService = class AuthService {
         }
         user.isWriter = true;
         user.isVerified = true;
-        await this._usersService.updateOne({ id: id }, user);
+        await this._usersService.findOneAndUpdate({ id: id }, user);
         return { message: 'Your account is now verified. You will now have access to Writer privileges' };
     }
 };
