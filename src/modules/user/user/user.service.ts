@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/interface/user.interface';
@@ -66,11 +66,9 @@ export class UserService {
     async updateUser(user: any, userId: string) {
         
         const oldUser = await this.userModel.findOne({ id: userId });
-        if (!oldUser) {
-            
+        if (!oldUser) {   
           throw new NotFoundException('User not found');
         }
-        
         if (user.avatar && user.avatar.length) {
           
           user['captureFileURL'] = user.avatar[0].captureFileURL;
@@ -91,9 +89,7 @@ export class UserService {
             });
           }
         }
-        
         await this.userModel.updateOne({ id: userId }, user);
-    
         return {
           message: 'User has been updated succesfully',
         };
