@@ -23,7 +23,7 @@ export class UserController {
     }
 
     @Get('getUserByID/:userID')
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     async getUserByID(
         @Param('userID') userID: string
     ) {

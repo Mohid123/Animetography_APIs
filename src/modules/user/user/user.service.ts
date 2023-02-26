@@ -64,8 +64,7 @@ export class UserService {
     }
 
     async updateUser(user: any, userId: string) {
-        
-        const oldUser = await this.userModel.findOne({ id: userId });
+        const oldUser = await this.userModel.findOne({ _id: userId });
         if (!oldUser) {   
           throw new NotFoundException('User not found');
         }
@@ -89,7 +88,7 @@ export class UserService {
             });
           }
         }
-        await this.userModel.updateOne({ id: userId }, user);
+        await this.userModel.updateOne({ _id: userId }, user);
         return {
           message: 'User has been updated succesfully',
         };

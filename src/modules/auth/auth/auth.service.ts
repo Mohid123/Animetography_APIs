@@ -76,11 +76,13 @@ export class AuthService {
   }
 
   async confirmEmailAdress(id: string, user: any) {
-    const oldUser = await this._usersService.findOne({ id: id });
+    const oldUser = await this._usersService.findOne({ _id: id });
     if(!oldUser) {
       throw new NotFoundException('User does not exist')
     }
-    await this._usersService.updateOne({id: id}, user);
+    user.isWriter = true;
+    user.isVerified = true;
+    await this._usersService.updateOne({_id: id}, user);
     return {message: 'Your account is now verified. You will now have access to Writer privileges'}
   }
 }
