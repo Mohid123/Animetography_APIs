@@ -12,15 +12,15 @@ export class AuthController {
 
     @Get('login/:email/:password')
     loginToken (
-        @Param('email') email: string,
-        @Param('password') password: string) {
-            if(email == 'test@gmail.com' && password == 'test@123') {
-                return this.authService.loginToken();
-            }
-            else {
-                return new HttpException('Forbidden', HttpStatus.FORBIDDEN)
-            }
+    @Param('email') email: string,
+    @Param('password') password: string) {
+        if(email == 'test@gmail.com' && password == 'test@123') {
+            return this.authService.loginToken();
         }
+        else {
+            return new HttpException('Forbidden', HttpStatus.FORBIDDEN)
+        }
+    }
 
     @Post('login')
     login(@Body() loginDto: LoginDto) {
@@ -30,5 +30,10 @@ export class AuthController {
     @Post('signup')
     signup(@Body() signupDto: UserDto) {
         return this.authService.signup(signupDto);
+    }
+
+    @Post('confirmEmail')
+    async confirmEmail(@Body() id: string) {
+        return await this.authService.confirmEmailAdress(id);
     }
 }
