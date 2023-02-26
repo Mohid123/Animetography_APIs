@@ -24,7 +24,6 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 import { HttpException } from '@nestjs/common';
-import { ConfirmationDto } from 'src/dto/confirmation.dto';
 import { LoginDto } from 'src/dto/login.dto';
 import { UserDto } from 'src/dto/user.dto';
 import { AuthService } from './auth.service';
@@ -43,7 +42,7 @@ export declare class AuthController {
     signup(signupDto: UserDto): Promise<import("../../../interface/user.interface").User & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    confirmEmail(confirmationDto: ConfirmationDto): Promise<{
+    confirmEmail(user: UserDto, id: string): Promise<{
         message: string;
     }>;
 }

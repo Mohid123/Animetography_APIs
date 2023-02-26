@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const confirmation_dto_1 = require("../../../dto/confirmation.dto");
 const login_dto_1 = require("../../../dto/login.dto");
 const user_dto_1 = require("../../../dto/user.dto");
 const auth_service_1 = require("./auth.service");
@@ -37,8 +36,8 @@ let AuthController = class AuthController {
     signup(signupDto) {
         return this.authService.signup(signupDto);
     }
-    async confirmEmail(confirmationDto) {
-        return await this.authService.confirmEmailAdress(confirmationDto);
+    async confirmEmail(user, id) {
+        return await this.authService.confirmEmailAdress(id, user);
     }
 };
 __decorate([
@@ -64,10 +63,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signup", null);
 __decorate([
-    (0, common_1.Post)('confirmEmail'),
+    (0, common_1.Post)('confirmEmail/:id'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [confirmation_dto_1.ConfirmationDto]),
+    __metadata("design:paramtypes", [user_dto_1.UserDto, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "confirmEmail", null);
 AuthController = __decorate([

@@ -20,7 +20,7 @@ export declare class AuthService {
     signup(loginDto: any): Promise<User & {
         _id: Types.ObjectId;
     }>;
-    confirmEmailAdress(confirmationDto: any): Promise<{
+    confirmEmailAdress(id: string, user: any): Promise<{
         message: string;
     }>;
 }
