@@ -46,6 +46,7 @@ export class AuthService {
   }
 
   async signup(loginDto: any) {
+    debugger
     const user = await this._usersService.findOne({ email: loginDto.email });
     if(user) {
       throw new ForbiddenException('Email already exists');
@@ -76,7 +77,7 @@ export class AuthService {
   }
 
   async confirmEmailAdress(confirmationDto: any) {
-    const user = await this._usersService.findOne({ id: confirmationDto.id, deletedCheck: false });
+    const user = await this._usersService.findOne({ id: confirmationDto.id }, {deletedCheck: false});
     if(!user) {
       throw new NotFoundException('User does not exist')
     }
