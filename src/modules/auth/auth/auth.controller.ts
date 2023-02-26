@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { ConfirmationDto } from 'src/dto/confirmation.dto';
 import { LoginDto } from 'src/dto/login.dto';
 import { UserDto } from 'src/dto/user.dto';
 import { AuthService } from './auth.service';
@@ -33,7 +34,7 @@ export class AuthController {
     }
 
     @Post('confirmEmail')
-    async confirmEmail(@Body() id: string) {
-        return await this.authService.confirmEmailAdress(id);
+    async confirmEmail(@Body() confirmationDto: ConfirmationDto) {
+        return await this.authService.confirmEmailAdress(confirmationDto);
     }
 }
