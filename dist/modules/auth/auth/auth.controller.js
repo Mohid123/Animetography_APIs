@@ -36,6 +36,9 @@ let AuthController = class AuthController {
     signup(signupDto) {
         return this.authService.signup(signupDto);
     }
+    async confirmEmail(id) {
+        return await this.authService.confirmEmailAdress(id);
+    }
 };
 __decorate([
     (0, common_1.Get)('login/:email/:password'),
@@ -59,6 +62,13 @@ __decorate([
     __metadata("design:paramtypes", [user_dto_1.UserDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signup", null);
+__decorate([
+    (0, common_1.Post)('confirmEmail'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "confirmEmail", null);
 AuthController = __decorate([
     (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),

@@ -20,5 +20,7 @@ export declare class AuthService {
     signup(loginDto: any): Promise<User & {
         _id: Types.ObjectId;
     }>;
-    confirmEmailAdress(email: string): Promise<import("mongodb").UpdateResult>;
+    confirmEmailAdress(id: string): Promise<{
+        message: string;
+    }>;
 }
