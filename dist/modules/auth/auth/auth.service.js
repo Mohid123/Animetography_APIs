@@ -101,13 +101,11 @@ let AuthService = class AuthService {
         return await new this._usersService(loginDto).save();
     }
     async confirmEmailAdress(id, user) {
-        const oldUser = await this._usersService.findOne({ id: id }, { deletedCheck: false });
+        const oldUser = await this._usersService.findOne({ id: id });
         if (!oldUser) {
             throw new common_1.NotFoundException('User does not exist');
         }
-        user.isWriter = true;
-        user.isVerified = true;
-        await this._usersService.findOneAndUpdate({ id: id }, user);
+        await this._usersService.updateOne({ id: id }, user);
         return { message: 'Your account is now verified. You will now have access to Writer privileges' };
     }
 };
