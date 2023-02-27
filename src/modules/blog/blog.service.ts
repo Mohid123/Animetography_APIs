@@ -6,6 +6,10 @@ import { Blog } from 'src/interface/blog.interface';
 import { Model, Types } from 'mongoose';
 import { encodeImageToBlurhash } from 'src/utils/utils';
 
+export enum SORT {
+  ASC = 'Ascending',
+  DESC = 'Descending',
+}
 @Injectable()
 export class BlogService {
     constructor(@InjectModel('Blog') private readonly blogModel: Model<Blog>) {}
@@ -17,14 +21,14 @@ export class BlogService {
             const totalCount = await this.blogModel.countDocuments({deletedCheck: false});
             const getItems = await this.blogModel.aggregate([
                 {
-                    $match: {
-                        deletedCheck: false
-                    }
+                  $match: {
+                    deletedCheck: false
+                  }
                 },
                 {
-                    $sort: {
-                        createdAt: -1
-                    }
+                  $sort: {
+                    createdAt: -1
+                  }
                 }
             ])
             .skip(parseInt(offset))
@@ -41,43 +45,43 @@ export class BlogService {
     }
 
     async addBlog(blog: any) {
-        if(!blog._id) {
-            blog._id = new Types.ObjectId().toString();
+      if(!blog._id) {
+          blog._id = new Types.ObjectId().toString();
+      }
+      else {
+        const blogItem = await this.blogModel.findById(blog._id);
+        if (!blogItem) {
+            blogItem._id = blogItem.id;
+        } else {
+            blogItem._id = new Types.ObjectId().toString();
         }
-        else {
-            const blogItem = await this.blogModel.findById(blog._id);
-            if (!blogItem) {
-                blogItem._id = blogItem.id;
-            } else {
-                blogItem._id = new Types.ObjectId().toString();
+      }
+      const newBlog = new this.blogModel(blog);
+      if (newBlog.coverImage && newBlog.coverImage.length) {
+        for await (const mediaObj of newBlog.coverImage) {
+          await new Promise(async (resolve, reject) => {
+            try {
+              let mediaUrl = ''
+              mediaUrl = mediaObj.captureFileURL;
+              mediaObj['blurHash'] = await encodeImageToBlurhash(mediaUrl);
+              resolve({})
             }
+            catch (err) {
+              reject(err)
+            }
+          })
         }
-        const newBlog = new this.blogModel(blog);
-        if (newBlog.coverImage && newBlog.coverImage.length) {
-            for await (const mediaObj of newBlog.coverImage) {
-                await new Promise(async (resolve, reject) => {
-                    try {
-                        let mediaUrl = ''
-                        mediaUrl = mediaObj.captureFileURL;
-                        mediaObj['blurHash'] = await encodeImageToBlurhash(mediaUrl);
-                        resolve({})
-                    }
-                    catch (err) {
-                        reject(err)
-                    }
-                })
-            }
-        }
-        return await newBlog.save().then((result) => {
-            if(result) {
-                return result
-            }
-            else {
-                throw new BadRequestException('Failed to create new post!')
-            }
-        }).catch((err) => {
-            throw new BadRequestException(err)
-        });
+      }
+      return await newBlog.save().then((result) => {
+          if(result) {
+              return result
+          }
+          else {
+              throw new BadRequestException('Failed to create new post!')
+          }
+      }).catch((err: any) => {
+          throw new BadRequestException(err)
+      });
     }
 
     async getBlogByID(id: string) {
@@ -131,6 +135,40 @@ export class BlogService {
     }
 
     async deletePostPermanently(id: string) {
-        return await this.blogModel.deleteOne({ _id: id });
+      return await this.blogModel.deleteOne({ _id: id });
+    }
+
+    async searchBlogPost(blogTitle: string) {
+      let sort = {},
+          filters = {};
+      if(blogTitle) {
+        let title = blogTitle == SORT.ASC ? 1 : -1;
+        sort = {
+          ...sort,
+          blogTitle: title,
+        };
+        if (blogTitle.trim().length) {
+          var query = new RegExp(`${blogTitle}`, 'i');
+          filters = {
+            ...filters,
+            blogTitle: query,
+          };
+        }
+        const blogTitles = await this.blogModel.aggregate([
+          {
+            $match: {
+              deletedCheck: false,
+              ...filters
+            }
+          },
+          {
+            $sort: sort
+          },
+          {
+            $project: {_id: 1, blogTitle: 1}
+          }
+        ]);
+        return blogTitles
+      }
     }
 }
