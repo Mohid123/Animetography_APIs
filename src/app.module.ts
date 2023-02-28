@@ -10,6 +10,7 @@ import { AuthModule } from './modules/auth/auth/auth.module';
 import config from './config';
 import { UserModule } from './modules/user/user/user.module';
 import { BlogModule } from './modules/blog/blog.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { BlogModule } from './modules/blog/blog.module';
    MediaUploadModule,
    BlogModule,
    AuthModule.forRoot(),
-   UserModule
+   UserModule,
+   FavoritesModule
   ],
   controllers: [AppController],
   providers: [AppService],

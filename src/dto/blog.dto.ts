@@ -16,9 +16,6 @@ export class BlogDto {
     blogContent: string;
 
     @ApiProperty()
-    isFavorite: boolean;
-
-    @ApiProperty()
     postedDate: number;
 
     @ApiProperty({
