@@ -60,4 +60,25 @@ export class BlogController {
     async searchPostbyTitle(@Param('blogTitle') blogTitle: string) {
       return await this.blogService.searchBlogPost(blogTitle);
     }
+
+    @Post('filterPostByDates')
+    @UseGuards(JwtAuthGuard)
+    async filterPostsByDateRange(
+      @Query('dateFrom') dateFrom: number,
+      @Query('dateTo') dateTo: number,
+      @Query('limit') limit: number = 10,
+      @Query('offset') offset: number = 0
+      ) {
+      return await this.blogService.filterByDateRange(dateFrom, dateTo, limit, offset)
+    }
+
+    @Post('sortPostsByOrder')
+    @UseGuards(JwtAuthGuard)
+    async sortPostsOrder(
+      @Query('sortStr') sortStr: string,
+      @Query('limit') limit: number = 10,
+      @Query('offset') offset: number = 0
+    ) {
+      return await this.blogService.sortPosts(sortStr, offset, limit);
+    }
 }
