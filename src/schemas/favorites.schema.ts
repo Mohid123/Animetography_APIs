@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
 import { Favorites } from 'src/interface/favorites.interface';
 import { generateStringId } from 'src/utils/utils';

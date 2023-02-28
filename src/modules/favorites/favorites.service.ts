@@ -1,73 +1,87 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Blog } from 'src/interface/blog.interface';
 import { Favorites } from 'src/interface/favorites.interface';
 
+
 @Injectable()
 export class FavoritesService {
   constructor(
     @InjectModel('Favorites') private readonly favModel: Model<Favorites>,
     @InjectModel('Blog') private readonly blogModel: Model<Blog>,
-    ) {}
+  ) {}
 
   async addToFavorites(favoritesDto: any, req: any) {
     try {
-      const post = this.blogModel.findById({_id: favoritesDto.id, deletedCheck: false });
+      const post = await this.blogModel.findById({
+        _id: favoritesDto.postID,
+        deletedCheck: false,
+      });
       if (!post) {
         throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
-      }
-      else {
-        const checkIfAlreadyFavorite = this.favModel.findOne({_id: favoritesDto.id, userID: req.user.id, deletedCheck: false});
-        if(checkIfAlreadyFavorite) {
-          return checkIfAlreadyFavorite
+      } else {
+        const checkIfAlreadyFavorite = await this.favModel.findOne({
+          postID: favoritesDto.postID,
+          userID: req.user.id,
+          deletedCheck: false,
+        });
+        if (checkIfAlreadyFavorite) {
+          return checkIfAlreadyFavorite;
         }
         else {
           favoritesDto.userID = req.user.id;
           await this.favModel.updateOne(
-            { postID: favoritesDto.postID, userID: req.user.id},
+            { postID: favoritesDto.postID, userID: req.user.id },
             { ...favoritesDto, deletedCheck: false },
-            { upsert: true }
+            { upsert: true },
           );
           return {
-            message: 'Added to favourites'
-          }
+            message: 'Added to favourites',
+          };
         }
       }
     } catch (error) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async removeFromFavourites(id: any, req: any) {
-    await this.favModel.updateOne({
-        postID: id,
-        userID: req.user.id,
-    }, { deletedCheck: true });
-    return {
-      message: 'Removed from favourites'
-    }
-  }
+  // async removeFromFavourites(id: any, req: any) {
+  //   debugger
+  //   await this.favModel.updateOne(
+  //     {
+  //       postID: id,
+  //       userID: req.user.id,
+  //     },
+  //     { deletedCheck: true },
+  //   );
+  //   debugger
+  //   return {
+  //     message: 'Removed from favourites',
+  //   };
+  // }
 
-  async getFavourite (id: string) {
+  async getFavourite(id: string) {
     try {
-      const favourite = await this.favModel.aggregate([
-        {
-          $match: {
-            _id: id,
-            deletedCheck: false
-          }
-        },
-        {
-          $project: {
-            _id: 0
-          }
-        }
-      ])
-      .then((items) => items[0]);
+      const favourite = await this.favModel
+        .aggregate([
+          {
+            $match: {
+              _id: id,
+              deletedCheck: false,
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+            },
+          },
+        ])
+        .then((items) => items[0]);
       return favourite;
-    }
-    catch (err) {
+    } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }
@@ -78,35 +92,35 @@ export class FavoritesService {
       limit = parseInt(limit) < 1 ? 10 : limit;
 
       const totalCount = await this.favModel.countDocuments({
-        deletedCheck: false
-      })
+        deletedCheck: false,
+      });
 
-      const allFavourites = await this.favModel.aggregate([
-        {
-          $match: {
-            deletedCheck: false
-          }
-        },
-        {
-          $sort: {
-            cretedAt: -1
-          }
-        },
-        {
-          $project: {
-            _id: 0
-          }
-        }
-      ])
-      .skip(parseInt(offset))
-      .limit(parseInt(limit))
+      const allFavourites = await this.favModel
+        .aggregate([
+          {
+            $match: {
+              deletedCheck: false,
+            },
+          },
+          {
+            $sort: {
+              cretedAt: -1,
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+            },
+          },
+        ])
+        .skip(parseInt(offset))
+        .limit(parseInt(limit));
 
       return {
         totalFavouriteDeals: totalCount,
-        data: allFavourites
-      }
-    }
-    catch (err) {
+        data: allFavourites,
+      };
+    } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }

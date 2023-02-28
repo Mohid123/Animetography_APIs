@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -19,9 +19,9 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
       isGlobal: true
   }),
    MongooseModule.forRoot(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }),
+   AuthModule.forRoot(),
    MediaUploadModule,
    BlogModule,
-   AuthModule.forRoot(),
    UserModule,
    FavoritesModule
   ],

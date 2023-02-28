@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MailerService } from '@nestjs-modules/mailer/dist/mailer.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { response } from 'express';
