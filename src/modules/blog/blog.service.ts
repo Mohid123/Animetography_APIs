@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blog } from 'src/interface/blog.interface';
@@ -137,13 +137,13 @@ export class BlogService {
           filters = {};
 
       if (blogTitle) {
-        let title = blogTitle == SORT.ASC ? 1 : -1;
+        const title = blogTitle == SORT.ASC ? 1 : -1;
         sort = {
           ...sort,
           blogTitle: title,
         };
         if (blogTitle.trim().length) {
-          var query = new RegExp(`${blogTitle}`, 'i');
+          const query = new RegExp(`${blogTitle}`, 'i');
           filters = {
             ...filters,
             blogTitle: query,
@@ -249,7 +249,7 @@ export class BlogService {
 
   async sortPosts(sortStr: any, offset: any, limit: any) {
     try {
-      let queryOrder = sortStr == SORT.ASC ? 1 : -1;
+      const queryOrder = sortStr == SORT.ASC ? 1 : -1;
       let sort = {};
       sort = {
         ...sort,
