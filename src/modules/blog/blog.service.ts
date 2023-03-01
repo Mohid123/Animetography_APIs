@@ -96,34 +96,28 @@ export class BlogService {
   }
 
   async updateBlog(blog: any, blogId: string) {
-    const oldUser = await this.blogModel.findOne({ _id: blogId });
-    if (!oldUser) {
-
-      throw new NotFoundException('User not found');
+    const oldPost = await this.blogModel.findOne({ _id: blogId });
+    if (!oldPost) {
+      throw new NotFoundException('Post not found');
     }
-
     if (blog.coverImage && blog.coverImage.length) {
-
       blog['captureFileURL'] = blog.coverImage[0].captureFileURL;
-
       for await (const mediaObj of blog.coverImage) {
         await new Promise(async (resolve, reject) => {
           try {
             let urlMedia = '';
             urlMedia = mediaObj.captureFileURL;
             mediaObj['blurHash'] = await encodeImageToBlurhash(urlMedia);
-
             resolve({});
-          } catch (err) {
-            console.log('Error', err);
+          }
+          catch (err) {
             reject(err);
+            throw new HttpException('Something went wrong', HttpStatus.BAD_REQUEST)
           }
         });
       }
     }
-
     await this.blogModel.updateOne({ _id: blogId }, blog);
-
     return {
       message: 'Blog has been updated succesfully',
     };
