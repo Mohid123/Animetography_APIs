@@ -109,7 +109,7 @@ export class FavoritesService {
           },
           {
             $sort: {
-              cretedAt: -1,
+              createdAt: -1,
             },
           },
           {
