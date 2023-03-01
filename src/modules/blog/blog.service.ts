@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blog } from 'src/interface/blog.interface';
 import { Model, Types } from 'mongoose';
@@ -273,6 +273,87 @@ export class BlogService {
     }
     catch (error) {
       throw new BadRequestException(error)
+    }
+  }
+
+  async getUserFavorites(limit: any, offset: any) {
+    try {
+      offset = parseInt(offset) < 0 ? 0 : offset;
+      limit = parseInt(limit) < 1 ? 10 : limit;
+      const favoritePosts = await this.blogModel.aggregate([
+        {
+          $match: {
+            deletedCheck: false
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $lookup: {
+            from: 'Favorites',
+            as: 'favoritePost',
+            let: {
+              postID: '$_id',
+              deletedCheck: '$deletedCheck'
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: ['$postID', '$$postID']
+                      },
+                      {
+                        $eq: ['$deletedCheck', false]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  _id: 0,
+                  __v: 0,
+                  updatedAt: 0,
+                  deletedCheck: 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          $unwind: '$favoritePost'
+        },
+        {
+          $addFields: {
+            isFavorite: {
+              $cond: [
+                {
+                  $ifNull: ['$favoritePost', false],
+                },
+                true,
+                false,
+              ],
+            },
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            _v: 0,
+            __v: 0
+          }
+        }
+      ])
+      .skip(parseInt(offset))
+      .limit(parseInt(limit));
+      return favoritePosts
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.NOT_ACCEPTABLE)
     }
   }
 }

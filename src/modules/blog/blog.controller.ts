@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BlogDto } from 'src/dto/blog.dto';
 import { JwtAuthGuard } from '../auth/auth/jwt-auth.guard';
@@ -80,5 +80,15 @@ export class BlogController {
       @Query('offset') offset: number = 0
     ) {
       return await this.blogService.sortPosts(sortStr, offset, limit);
+    }
+
+    @Get('getUserFavorites')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    async getFavoritesForUser(
+      @Query('limit') limit: number = 10,
+      @Query('offset') offset: number = 0
+    ) {
+      return await this.blogService.getUserFavorites(limit, offset);
     }
 }

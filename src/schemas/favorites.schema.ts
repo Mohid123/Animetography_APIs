@@ -11,7 +11,7 @@ export const FavouriteSchema = new mongoose.Schema(
     deletedCheck: { type: Boolean, default: false },
   },
   {
-    collection: 'favourites',
+    collection: 'Favorites',
   },
 );
 
@@ -24,7 +24,7 @@ FavouriteSchema.set('toJSON', {
   },
 });
 
-mongoose.model('favourites', FavouriteSchema);
+mongoose.model('favorites', FavouriteSchema);
 
 FavouriteSchema.pre<Favorites>('save', async function (next) {
   next();

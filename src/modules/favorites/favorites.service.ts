@@ -68,11 +68,20 @@ export class FavoritesService {
 
   async getFavourite(id: string, req: any) {
     try {
-      const checkIfExists = await this.favModel.findOne({
-        postID: id,
-        userID: req.user.id,
-        deletedCheck: false,
-      });
+      const checkIfExists = await this.favModel.aggregate([
+        {
+          $match: {
+            postID: id,
+            userID: req.user.id,
+            deletedCheck: false
+          }
+        },
+        {
+          $project: {
+            __v: 0
+          }
+        }
+      ]);
       if(!checkIfExists) {
         throw new HttpException('Post does not exist in favorites', HttpStatus.NOT_FOUND)
       }
