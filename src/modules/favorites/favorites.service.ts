@@ -6,7 +6,6 @@ import { Model } from 'mongoose';
 import { Blog } from 'src/interface/blog.interface';
 import { Favorites } from 'src/interface/favorites.interface';
 
-
 @Injectable()
 export class FavoritesService {
   constructor(
@@ -48,39 +47,36 @@ export class FavoritesService {
     }
   }
 
-  // async removeFromFavourites(id: any, req: any) {
-  //   debugger
-  //   await this.favModel.updateOne(
-  //     {
-  //       postID: id,
-  //       userID: req.user.id,
-  //     },
-  //     { deletedCheck: true },
-  //   );
-  //   debugger
-  //   return {
-  //     message: 'Removed from favourites',
-  //   };
-  // }
-
-  async getFavourite(id: string) {
+  async removeFromFavourites(postID: any, req: any) {
     try {
-      const favourite = await this.favModel
-        .aggregate([
-          {
-            $match: {
-              _id: id,
-              deletedCheck: false,
-            },
-          },
-          {
-            $project: {
-              _id: 0,
-            },
-          },
-        ])
-        .then((items) => items[0]);
-      return favourite;
+      const checkIfExists = await this.favModel.findOne({
+        postID: postID,
+        userID: req.user.id,
+        deletedCheck: false,
+      });
+      if(checkIfExists) {
+        await this.favModel.updateOne({_id: checkIfExists.id, deletedCheck: true});
+        return {message: 'Removed from favorites'}
+      }
+      else {
+        throw new HttpException('Post does not exist in favorites', HttpStatus.NOT_FOUND)
+      }
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async getFavourite(id: string, req: any) {
+    try {
+      const checkIfExists = await this.favModel.findOne({
+        postID: id,
+        userID: req.user.id,
+        deletedCheck: false,
+      });
+      if(!checkIfExists) {
+        throw new HttpException('Post does not exist in favorites', HttpStatus.NOT_FOUND)
+      }
+      return checkIfExists;
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }

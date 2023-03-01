@@ -24,9 +24,10 @@ export class FavoritesController {
     @Get('getFavoriteByID/:id')
     @UseGuards(JwtAuthGuard)
     async getFavById(
-      @Param('id') id: string
+      @Param('id') id: string,
+      @Req() req
     ) {
-      return await this.favoriteService.getFavourite(id);
+      return await this.favoriteService.getFavourite(id, req);
     }
 
     @Post('addToFavorites')
@@ -35,12 +36,12 @@ export class FavoritesController {
       return await this.favoriteService.addToFavorites(favoritesDto, req)
     }
 
-    // @Get('removeFromFavourites/:id')
-    // @UseGuards(JwtAuthGuard)
-    // removeFromFavourites (
-    //     @Param('id') id: string,
-    //     @Req() req,
-    // ) {
-    //     return this.favoriteService.removeFromFavourites(id, req)
-    // }
+    @Get('removeFromFavourites/:postID')
+    @UseGuards(JwtAuthGuard)
+    removeFromFavourites (
+        @Param('postID') postID: string,
+        @Req() req,
+    ) {
+      return this.favoriteService.removeFromFavourites(postID, req)
+    }
 }
