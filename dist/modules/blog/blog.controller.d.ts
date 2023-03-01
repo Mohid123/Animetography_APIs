@@ -32,15 +32,23 @@ export declare class BlogController {
         data: any[];
         totalCount: number;
     }>;
-    getBlogById(blogID: string): Promise<import("../../interface/blog.interface").Blog & {
+    getBlogById(postID: string): Promise<import("../../interface/blog.interface").Blog & {
         _id: import("mongoose").Types.ObjectId;
     }>;
     addBlogPost(blogDto: BlogDto): Promise<import("../../interface/blog.interface").Blog & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    updateBlogPost(blogDto: BlogDto, blogID: string): Promise<{
+    updateBlogPost(blogDto: BlogDto, postID: string): Promise<{
         message: string;
     }>;
     deleteBlogPost(postID: string): Promise<import("mongodb").UpdateResult>;
     deletePermanently(postID: string): Promise<import("mongodb").DeleteResult>;
+    searchPostbyTitle(blogTitle: string): Promise<any[]>;
+    filterPostsByDateRange(dateFrom: number, dateTo: number, limit?: number, offset?: number): Promise<{
+        data: any[];
+        totalCount: number;
+        filteredCount: number;
+    }>;
+    sortPostsOrder(sortStr: string, limit?: number, offset?: number): Promise<any[]>;
+    getFavoritesForUser(limit?: number, offset?: number): Promise<any[]>;
 }

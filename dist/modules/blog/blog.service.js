@@ -19,11 +19,16 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BlogService = void 0;
+exports.BlogService = exports.SORT = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const utils_1 = require("../../utils/utils");
+var SORT;
+(function (SORT) {
+    SORT["ASC"] = "Ascending";
+    SORT["DESC"] = "Descending";
+})(SORT = exports.SORT || (exports.SORT = {}));
 let BlogService = class BlogService {
     constructor(blogModel) {
         this.blogModel = blogModel;
@@ -119,9 +124,9 @@ let BlogService = class BlogService {
     }
     async updateBlog(blog, blogId) {
         var e_2, _a;
-        const oldUser = await this.blogModel.findOne({ _id: blogId });
-        if (!oldUser) {
-            throw new common_1.NotFoundException('User not found');
+        const oldPost = await this.blogModel.findOne({ _id: blogId });
+        if (!oldPost) {
+            throw new common_1.NotFoundException('Post not found');
         }
         if (blog.coverImage && blog.coverImage.length) {
             blog['captureFileURL'] = blog.coverImage[0].captureFileURL;
@@ -136,8 +141,8 @@ let BlogService = class BlogService {
                             resolve({});
                         }
                         catch (err) {
-                            console.log('Error', err);
                             reject(err);
+                            throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.BAD_REQUEST);
                         }
                     });
                 }
@@ -160,6 +165,181 @@ let BlogService = class BlogService {
     }
     async deletePostPermanently(id) {
         return await this.blogModel.deleteOne({ _id: id });
+    }
+    async searchBlogPost(blogTitle) {
+        try {
+            let sort = {}, filters = {};
+            if (blogTitle) {
+                const title = blogTitle == SORT.ASC ? 1 : -1;
+                sort = Object.assign(Object.assign({}, sort), { blogTitle: title });
+                if (blogTitle.trim().length) {
+                    const query = new RegExp(`${blogTitle}`, 'i');
+                    filters = Object.assign(Object.assign({}, filters), { blogTitle: query });
+                }
+                const blogTitles = await this.blogModel.aggregate([
+                    {
+                        $match: Object.assign({ deletedCheck: false }, filters)
+                    },
+                    {
+                        $sort: sort
+                    },
+                    {
+                        $project: { _id: 1, blogTitle: 1 }
+                    }
+                ]);
+                return blogTitles;
+            }
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(error);
+        }
+    }
+    async filterByDateRange(dateFrom, dateTo, limit, offset) {
+        try {
+            dateFrom = parseInt(dateFrom);
+            dateTo = parseInt(dateTo);
+            limit = parseInt(limit) < 1 ? 10 : limit;
+            offset = parseInt(offset) < 0 ? 0 : offset;
+            let dateFromFilters = {}, dateToFilters = {}, matchFilter = {};
+            if (dateFrom) {
+                dateFromFilters = Object.assign(Object.assign({}, dateFromFilters), { $gte: dateFrom });
+            }
+            if (dateTo) {
+                dateToFilters = Object.assign(Object.assign({}, dateToFilters), { $lte: dateTo });
+            }
+            if (dateFrom || dateTo) {
+                matchFilter = Object.assign(Object.assign({}, matchFilter), { $and: [
+                        {
+                            postedDate: Object.assign({}, dateFromFilters),
+                        },
+                        {
+                            postedDate: Object.assign({}, dateToFilters),
+                        },
+                    ] });
+            }
+            const totalCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false }, matchFilter));
+            const filteredCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false }, matchFilter));
+            const blogPosts = await this.blogModel.aggregate([
+                {
+                    $match: Object.assign({ deletedCheck: false }, matchFilter)
+                },
+                {
+                    $sort: {
+                        createdAt: -1
+                    },
+                }
+            ])
+                .skip(parseInt(offset))
+                .limit(parseInt(limit));
+            return {
+                data: blogPosts,
+                totalCount: totalCount,
+                filteredCount: filteredCount
+            };
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(error);
+        }
+    }
+    async sortPosts(sortStr, offset, limit) {
+        try {
+            const queryOrder = sortStr == SORT.ASC ? 1 : -1;
+            let sort = {};
+            sort = Object.assign(Object.assign({}, sort), { blogTitle: queryOrder });
+            const blogPosts = await this.blogModel.aggregate([
+                {
+                    $sort: sort
+                }
+            ])
+                .collation({ locale: "en" })
+                .skip(parseInt(offset))
+                .limit(parseInt(limit));
+            return blogPosts;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error);
+        }
+    }
+    async getUserFavorites(limit, offset) {
+        try {
+            offset = parseInt(offset) < 0 ? 0 : offset;
+            limit = parseInt(limit) < 1 ? 10 : limit;
+            const favoritePosts = await this.blogModel.aggregate([
+                {
+                    $match: {
+                        deletedCheck: false
+                    }
+                },
+                {
+                    $sort: {
+                        createdAt: -1
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'Favorites',
+                        as: 'favoritePost',
+                        let: {
+                            postID: '$_id',
+                            deletedCheck: '$deletedCheck'
+                        },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            {
+                                                $eq: ['$postID', '$$postID']
+                                            },
+                                            {
+                                                $eq: ['$deletedCheck', false]
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $project: {
+                                    _id: 0,
+                                    __v: 0,
+                                    updatedAt: 0,
+                                    deletedCheck: 0
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    $unwind: '$favoritePost'
+                },
+                {
+                    $addFields: {
+                        isFavorite: {
+                            $cond: [
+                                {
+                                    $ifNull: ['$favoritePost', false],
+                                },
+                                true,
+                                false,
+                            ],
+                        },
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        _v: 0,
+                        __v: 0
+                    }
+                }
+            ])
+                .skip(parseInt(offset))
+                .limit(parseInt(limit));
+            return favoritePosts;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error, common_1.HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 };
 BlogService = __decorate([

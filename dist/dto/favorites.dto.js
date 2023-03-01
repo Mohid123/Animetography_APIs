@@ -9,13 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConfirmationDto = void 0;
+exports.FavoritesDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class ConfirmationDto {
+class FavoritesDto {
 }
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], ConfirmationDto.prototype, "id", void 0);
-exports.ConfirmationDto = ConfirmationDto;
-//# sourceMappingURL=confirmation.dto.js.map
+], FavoritesDto.prototype, "postID", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], FavoritesDto.prototype, "userID", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], FavoritesDto.prototype, "deletedCheck", void 0);
+exports.FavoritesDto = FavoritesDto;
+//# sourceMappingURL=favorites.dto.js.map

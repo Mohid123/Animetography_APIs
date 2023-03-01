@@ -3,7 +3,6 @@ export declare class BlogDto {
     blogTitle: string;
     blogSubtitle: string;
     blogContent: string;
-    isFavorite: boolean;
     postedDate: number;
     coverImage: any[];
     deletedCheck: boolean;

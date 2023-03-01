@@ -31,10 +31,6 @@ __decorate([
 ], BlogDto.prototype, "blogContent", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    __metadata("design:type", Boolean)
-], BlogDto.prototype, "isFavorite", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Number)
 ], BlogDto.prototype, "postedDate", void 0);
 __decorate([

@@ -17,6 +17,7 @@ const auth_module_1 = require("./modules/auth/auth/auth.module");
 const config_2 = require("./config");
 const user_module_1 = require("./modules/user/user/user.module");
 const blog_module_1 = require("./modules/blog/blog.module");
+const favorites_module_1 = require("./modules/favorites/favorites.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -27,10 +28,11 @@ AppModule = __decorate([
                 isGlobal: true
             }),
             mongoose_1.MongooseModule.forRoot(config_2.default.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }),
+            auth_module_1.AuthModule.forRoot(),
             media_upload_module_1.MediaUploadModule,
             blog_module_1.BlogModule,
-            auth_module_1.AuthModule.forRoot(),
-            user_module_1.UserModule
+            user_module_1.UserModule,
+            favorites_module_1.FavoritesModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

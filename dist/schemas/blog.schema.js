@@ -7,7 +7,6 @@ exports.BlogSchema = new mongoose.Schema({
     blogTitle: { type: String, default: '' },
     blogSubtitle: { type: String, default: '' },
     blogContent: { type: String, default: '' },
-    isFavorite: { type: Boolean, default: false },
     postedDate: { type: Number },
     coverImage: { type: Array, default: [] },
     deletedCheck: { type: Boolean, default: false }

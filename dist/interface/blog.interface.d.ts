@@ -4,7 +4,6 @@ export interface Blog extends Document {
     blogTitle: string;
     blogSubtitle: string;
     blogContent: string;
-    isFavorite: boolean;
     postedDate: number;
     coverImage: any[];
     deletedCheck: boolean;
