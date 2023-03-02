@@ -87,8 +87,9 @@ export class BlogController {
     @ApiBearerAuth()
     async getFavoritesForUser(
       @Query('limit') limit: number = 10,
-      @Query('offset') offset: number = 0
+      @Query('offset') offset: number = 0,
+      @Req() req
     ) {
-      return await this.blogService.getUserFavorites(limit, offset);
+      return await this.blogService.getUserFavorites(limit, offset, req);
     }
 }

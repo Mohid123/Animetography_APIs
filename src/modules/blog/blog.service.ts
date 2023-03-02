@@ -270,7 +270,7 @@ export class BlogService {
     }
   }
 
-  async getUserFavorites(limit: any, offset: any) {
+  async getUserFavorites(limit: any, offset: any, req: any) {
     try {
       offset = parseInt(offset) < 0 ? 0 : offset;
       limit = parseInt(limit) < 1 ? 10 : limit;
@@ -291,6 +291,7 @@ export class BlogService {
             as: 'favoritePost',
             let: {
               postID: '$_id',
+              userID: req.user.id,
               deletedCheck: '$deletedCheck'
             },
             pipeline: [
@@ -300,6 +301,9 @@ export class BlogService {
                     $and: [
                       {
                         $eq: ['$postID', '$$postID']
+                      },
+                      {
+                        $eq: ['$userID', '$$userID']
                       },
                       {
                         $eq: ['$deletedCheck', false]
