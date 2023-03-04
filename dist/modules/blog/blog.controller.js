@@ -50,8 +50,8 @@ let BlogController = class BlogController {
     async sortPostsOrder(sortStr, limit = 10, offset = 0) {
         return await this.blogService.sortPosts(sortStr, offset, limit);
     }
-    async getFavoritesForUser(limit = 10, offset = 0) {
-        return await this.blogService.getUserFavorites(limit, offset);
+    async getFavoritesForUser(limit = 10, offset = 0, req) {
+        return await this.blogService.getUserFavorites(limit, offset, req);
     }
 };
 __decorate([
@@ -139,8 +139,9 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     __param(0, (0, common_1.Query)('limit')),
     __param(1, (0, common_1.Query)('offset')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "getFavoritesForUser", null);
 BlogController = __decorate([

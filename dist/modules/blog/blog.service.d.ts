@@ -29,5 +29,5 @@ export declare class BlogService {
         filteredCount: number;
     }>;
     sortPosts(sortStr: any, offset: any, limit: any): Promise<any[]>;
-    getUserFavorites(limit: any, offset: any): Promise<any[]>;
+    getUserFavorites(limit: any, offset: any, req: any): Promise<any[]>;
 }

@@ -50,5 +50,5 @@ export declare class BlogController {
         filteredCount: number;
     }>;
     sortPostsOrder(sortStr: string, limit?: number, offset?: number): Promise<any[]>;
-    getFavoritesForUser(limit?: number, offset?: number): Promise<any[]>;
+    getFavoritesForUser(limit: number, offset: number, req: any): Promise<any[]>;
 }

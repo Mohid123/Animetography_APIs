@@ -260,7 +260,7 @@ let BlogService = class BlogService {
             throw new common_1.BadRequestException(error);
         }
     }
-    async getUserFavorites(limit, offset) {
+    async getUserFavorites(limit, offset, req) {
         try {
             offset = parseInt(offset) < 0 ? 0 : offset;
             limit = parseInt(limit) < 1 ? 10 : limit;
@@ -281,6 +281,7 @@ let BlogService = class BlogService {
                         as: 'favoritePost',
                         let: {
                             postID: '$_id',
+                            userID: req.user.id,
                             deletedCheck: '$deletedCheck'
                         },
                         pipeline: [
@@ -290,6 +291,9 @@ let BlogService = class BlogService {
                                         $and: [
                                             {
                                                 $eq: ['$postID', '$$postID']
+                                            },
+                                            {
+                                                $eq: ['$userID', '$$userID']
                                             },
                                             {
                                                 $eq: ['$deletedCheck', false]
