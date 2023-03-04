@@ -1,6 +1,6 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BlogDto } from 'src/dto/blog.dto';
@@ -14,7 +14,7 @@ import { BlogService } from './blog.service';
 export class BlogController {
     constructor(private readonly blogService: BlogService) {}
     @Get('getAllBlogs')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     async getAllBlogs(
       @Query('limit') limit: number = 10,
       @Query('offset') offset: number = 0
@@ -23,7 +23,7 @@ export class BlogController {
     }
 
     @Get('getBlogByID/:postID')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     async getBlogById(
       @Param('postID') postID: string
     ) {
@@ -56,13 +56,13 @@ export class BlogController {
     }
 
     @Get('searchPostByTitle/:blogTitle')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     async searchPostbyTitle(@Param('blogTitle') blogTitle: string) {
       return await this.blogService.searchBlogPost(blogTitle);
     }
 
     @Post('filterPostByDates')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     async filterPostsByDateRange(
       @Query('dateFrom') dateFrom: number,
       @Query('dateTo') dateTo: number,
@@ -73,7 +73,7 @@ export class BlogController {
     }
 
     @Post('sortPostsByOrder')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     async sortPostsOrder(
       @Query('sortStr') sortStr: string,
       @Query('limit') limit: number = 10,
@@ -83,7 +83,7 @@ export class BlogController {
     }
 
     @Get('getUserFavorites')
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     async getFavoritesForUser(
       @Query('limit') limit: number = 10,

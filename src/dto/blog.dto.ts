@@ -31,4 +31,7 @@ export class BlogDto {
 
     @ApiProperty()
     deletedCheck: boolean;
+
+    @ApiProperty()
+    author: string;
 }
