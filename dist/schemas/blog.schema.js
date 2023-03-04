@@ -9,7 +9,8 @@ exports.BlogSchema = new mongoose.Schema({
     blogContent: { type: String, default: '' },
     postedDate: { type: Number },
     coverImage: { type: Array, default: [] },
-    deletedCheck: { type: Boolean, default: false }
+    deletedCheck: { type: Boolean, default: false },
+    author: { type: String, default: '' }
 }, {
     collection: 'Blog',
 });

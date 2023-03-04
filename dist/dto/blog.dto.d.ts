@@ -6,4 +6,5 @@ export declare class BlogDto {
     postedDate: number;
     coverImage: any[];
     deletedCheck: boolean;
+    author: string;
 }

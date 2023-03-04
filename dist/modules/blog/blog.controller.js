@@ -56,7 +56,6 @@ let BlogController = class BlogController {
 };
 __decorate([
     (0, common_1.Get)('getAllBlogs'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('limit')),
     __param(1, (0, common_1.Query)('offset')),
     __metadata("design:type", Function),
@@ -65,7 +64,6 @@ __decorate([
 ], BlogController.prototype, "getAllBlogs", null);
 __decorate([
     (0, common_1.Get)('getBlogByID/:postID'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('postID')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -106,7 +104,6 @@ __decorate([
 ], BlogController.prototype, "deletePermanently", null);
 __decorate([
     (0, common_1.Get)('searchPostByTitle/:blogTitle'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('blogTitle')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -114,7 +111,6 @@ __decorate([
 ], BlogController.prototype, "searchPostbyTitle", null);
 __decorate([
     (0, common_1.Post)('filterPostByDates'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('dateFrom')),
     __param(1, (0, common_1.Query)('dateTo')),
     __param(2, (0, common_1.Query)('limit')),
@@ -125,7 +121,6 @@ __decorate([
 ], BlogController.prototype, "filterPostsByDateRange", null);
 __decorate([
     (0, common_1.Post)('sortPostsByOrder'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('sortStr')),
     __param(1, (0, common_1.Query)('limit')),
     __param(2, (0, common_1.Query)('offset')),
@@ -135,7 +130,6 @@ __decorate([
 ], BlogController.prototype, "sortPostsOrder", null);
 __decorate([
     (0, common_1.Get)('getUserFavorites'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __param(0, (0, common_1.Query)('limit')),
     __param(1, (0, common_1.Query)('offset')),

@@ -7,4 +7,5 @@ export interface Blog extends Document {
     postedDate: number;
     coverImage: any[];
     deletedCheck: boolean;
+    author: string;
 }

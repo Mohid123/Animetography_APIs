@@ -48,5 +48,9 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Boolean)
 ], BlogDto.prototype, "deletedCheck", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], BlogDto.prototype, "author", void 0);
 exports.BlogDto = BlogDto;
 //# sourceMappingURL=blog.dto.js.map
