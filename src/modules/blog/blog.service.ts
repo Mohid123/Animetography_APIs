@@ -351,7 +351,7 @@ export class BlogService {
       .limit(parseInt(limit));
       return favoritePosts
     } catch (error) {
-      throw new HttpException(error, HttpStatus.NOT_ACCEPTABLE)
+      throw new HttpException(error, HttpStatus.BAD_REQUEST)
     }
   }
 }
