@@ -342,7 +342,7 @@ let BlogService = class BlogService {
             return favoritePosts;
         }
         catch (error) {
-            throw new common_1.HttpException(error, common_1.HttpStatus.NOT_ACCEPTABLE);
+            throw new common_1.HttpException(error, common_1.HttpStatus.BAD_REQUEST);
         }
     }
 };
