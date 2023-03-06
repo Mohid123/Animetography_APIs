@@ -83,7 +83,7 @@ export class BlogController {
     }
 
     @Get('getUserFavorites')
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     async getFavoritesForUser(
       @Query('limit') limit: number = 10,
