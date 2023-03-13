@@ -249,7 +249,12 @@ let BlogService = class BlogService {
             const blogPosts = await this.blogModel.aggregate([
                 {
                     $sort: sort
-                }
+                },
+                {
+                    $match: {
+                        deletedCheck: false
+                    }
+                },
             ])
                 .collation({ locale: "en" })
                 .skip(parseInt(offset))
