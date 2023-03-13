@@ -253,12 +253,17 @@ export class BlogService {
       let sort = {};
       sort = {
         ...sort,
-        blogTitle: queryOrder
+        blogTitle: queryOrder,
       };
       const blogPosts = await this.blogModel.aggregate([
         {
           $sort: sort
-        }
+        },
+        {
+          $match: {
+            deletedCheck: false
+          }
+        },
       ])
       .collation({locale: "en"})
       .skip(parseInt(offset))
