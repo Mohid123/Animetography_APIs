@@ -8,4 +8,9 @@ export interface Blog extends Document {
     coverImage: any[];
     deletedCheck: boolean;
     author: string;
+    status: PostStatus;
+}
+export declare enum PostStatus {
+    PUBLISHED = "Published",
+    DRAFT = "Draft"
 }

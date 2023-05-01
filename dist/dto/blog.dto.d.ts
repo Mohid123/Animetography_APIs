@@ -1,3 +1,4 @@
+import { PostStatus } from "src/interface/blog.interface";
 export declare class BlogDto {
     _id: string;
     blogTitle: string;
@@ -7,4 +8,5 @@ export declare class BlogDto {
     coverImage: any[];
     deletedCheck: boolean;
     author: string;
+    status: PostStatus;
 }

@@ -7,5 +7,6 @@ export declare const BlogSchema: mongoose.Schema<any, mongoose.Model<any, any, a
     blogContent: string;
     coverImage: any[];
     author: string;
+    status: string;
     postedDate?: number;
 }>;

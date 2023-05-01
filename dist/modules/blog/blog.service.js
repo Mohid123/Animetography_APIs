@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogService = exports.SORT = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const blog_interface_1 = require("../../interface/blog.interface");
 const mongoose_2 = require("mongoose");
 const utils_1 = require("../../utils/utils");
 var SORT;
@@ -41,7 +42,8 @@ let BlogService = class BlogService {
             const getItems = await this.blogModel.aggregate([
                 {
                     $match: {
-                        deletedCheck: false
+                        deletedCheck: false,
+                        status: blog_interface_1.PostStatus.PUBLISHED
                     }
                 },
                 {
@@ -178,7 +180,7 @@ let BlogService = class BlogService {
                 }
                 const blogTitles = await this.blogModel.aggregate([
                     {
-                        $match: Object.assign({ deletedCheck: false }, filters)
+                        $match: Object.assign({ deletedCheck: false, status: blog_interface_1.PostStatus.PUBLISHED }, filters)
                     },
                     {
                         $sort: sort
@@ -217,11 +219,11 @@ let BlogService = class BlogService {
                         },
                     ] });
             }
-            const totalCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false }, matchFilter));
-            const filteredCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false }, matchFilter));
+            const totalCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false, status: blog_interface_1.PostStatus.PUBLISHED }, matchFilter));
+            const filteredCount = await this.blogModel.countDocuments(Object.assign({ deletedCheck: false, status: blog_interface_1.PostStatus.PUBLISHED }, matchFilter));
             const blogPosts = await this.blogModel.aggregate([
                 {
-                    $match: Object.assign({ deletedCheck: false }, matchFilter)
+                    $match: Object.assign({ deletedCheck: false, status: blog_interface_1.PostStatus.PUBLISHED }, matchFilter)
                 },
                 {
                     $sort: {
@@ -252,7 +254,8 @@ let BlogService = class BlogService {
                 },
                 {
                     $match: {
-                        deletedCheck: false
+                        deletedCheck: false,
+                        status: blog_interface_1.PostStatus.PUBLISHED
                     }
                 },
             ])
@@ -272,7 +275,8 @@ let BlogService = class BlogService {
             const favoritePosts = await this.blogModel.aggregate([
                 {
                     $match: {
-                        deletedCheck: false
+                        deletedCheck: false,
+                        status: blog_interface_1.PostStatus.PUBLISHED
                     }
                 },
                 {
@@ -347,7 +351,28 @@ let BlogService = class BlogService {
             return favoritePosts;
         }
         catch (error) {
-            throw new common_1.HttpException(error, common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException(error, common_1.HttpStatus.NOT_FOUND);
+        }
+    }
+    async getUserDrafts(limit, offset, req) {
+        try {
+            offset = parseInt(offset) < 0 ? 0 : offset;
+            limit = parseInt(limit) < 1 ? 10 : limit;
+            const draftPosts = await this.blogModel.aggregate([
+                {
+                    $match: {
+                        deletedCheck: false,
+                        status: blog_interface_1.PostStatus.DRAFT,
+                        author: req.user.username || req.user.firstName
+                    }
+                }
+            ])
+                .skip(parseInt(offset))
+                .limit(parseInt(limit));
+            return draftPosts;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error, common_1.HttpStatus.NOT_FOUND);
         }
     }
 };

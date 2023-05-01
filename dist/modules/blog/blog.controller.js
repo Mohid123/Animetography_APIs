@@ -53,6 +53,9 @@ let BlogController = class BlogController {
     async getFavoritesForUser(limit = 10, offset = 0, req) {
         return await this.blogService.getUserFavorites(limit, offset, req);
     }
+    async getDrafts(limit = 10, offset = 0, req) {
+        return await this.blogService.getUserDrafts(limit, offset, req);
+    }
 };
 __decorate([
     (0, common_1.Get)('getAllBlogs'),
@@ -139,6 +142,17 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "getFavoritesForUser", null);
+__decorate([
+    (0, common_1.Get)('getUserDrafts'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    __param(0, (0, common_1.Query)('limit')),
+    __param(1, (0, common_1.Query)('offset')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "getDrafts", null);
 BlogController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('Blogs'),

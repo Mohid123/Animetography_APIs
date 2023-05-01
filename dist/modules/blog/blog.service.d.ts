@@ -30,4 +30,5 @@ export declare class BlogService {
     }>;
     sortPosts(sortStr: any, offset: any, limit: any): Promise<any[]>;
     getUserFavorites(limit: any, offset: any, req: any): Promise<any[]>;
+    getUserDrafts(limit: any, offset: any, req: any): Promise<any[]>;
 }

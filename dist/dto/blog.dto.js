@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const blog_interface_1 = require("../interface/blog.interface");
 class BlogDto {
 }
 __decorate([
@@ -52,5 +53,9 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], BlogDto.prototype, "author", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], BlogDto.prototype, "status", void 0);
 exports.BlogDto = BlogDto;
 //# sourceMappingURL=blog.dto.js.map
