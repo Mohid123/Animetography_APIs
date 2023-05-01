@@ -11,7 +11,8 @@ export const BlogSchema = new mongoose.Schema(
         postedDate: { type: Number },
         coverImage: { type: Array, default: [] },
         deletedCheck: { type: Boolean, default: false },
-        author: { type: String, default: ''}
+        author: { type: String, default: ''},
+        status: { type: String, default: ''}
     },
     {
         collection: 'Blog',

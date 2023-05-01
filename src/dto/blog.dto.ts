@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/ban-types */
 import { ApiProperty } from "@nestjs/swagger";
+import { PostStatus } from "src/interface/blog.interface";
 
 export class BlogDto {
     @ApiProperty()
@@ -34,4 +35,7 @@ export class BlogDto {
 
     @ApiProperty()
     author: string;
+
+    @ApiProperty()
+    status: PostStatus
 }

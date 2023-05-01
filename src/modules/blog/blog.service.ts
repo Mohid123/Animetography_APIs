@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Blog } from 'src/interface/blog.interface';
+import { Blog, PostStatus } from 'src/interface/blog.interface';
 import { Model, Types } from 'mongoose';
 import { encodeImageToBlurhash } from 'src/utils/utils';
 
@@ -22,7 +22,8 @@ export class BlogService {
       const getItems = await this.blogModel.aggregate([
         {
           $match: {
-            deletedCheck: false
+            deletedCheck: false,
+            status: PostStatus.PUBLISHED
           }
         },
         {
@@ -153,6 +154,7 @@ export class BlogService {
           {
             $match: {
               deletedCheck: false,
+              status: PostStatus.PUBLISHED,
               ...filters
             }
           },
@@ -214,17 +216,20 @@ export class BlogService {
       }
       const totalCount = await this.blogModel.countDocuments({
         deletedCheck: false,
+        status: PostStatus.PUBLISHED,
         ...matchFilter,
       });
 
       const filteredCount = await this.blogModel.countDocuments({
         deletedCheck: false,
+        status: PostStatus.PUBLISHED,
         ...matchFilter,
       });
       const blogPosts = await this.blogModel.aggregate([
         {
           $match: {
             deletedCheck: false,
+            status: PostStatus.PUBLISHED,
             ...matchFilter
           }
         },
@@ -261,7 +266,8 @@ export class BlogService {
         },
         {
           $match: {
-            deletedCheck: false
+            deletedCheck: false,
+            status: PostStatus.PUBLISHED
           }
         },
       ])
@@ -282,7 +288,8 @@ export class BlogService {
       const favoritePosts = await this.blogModel.aggregate([
         {
           $match: {
-            deletedCheck: false
+            deletedCheck: false,
+            status: PostStatus.PUBLISHED
           }
         },
         {
@@ -356,7 +363,28 @@ export class BlogService {
       .limit(parseInt(limit));
       return favoritePosts
     } catch (error) {
-      throw new HttpException(error, HttpStatus.BAD_REQUEST)
+      throw new HttpException(error, HttpStatus.NOT_FOUND)
+    }
+  }
+
+  async getUserDrafts(limit: any, offset: any, req: any) {
+    try {
+      offset = parseInt(offset) < 0 ? 0 : offset;
+      limit = parseInt(limit) < 1 ? 10 : limit;
+      const draftPosts = await this.blogModel.aggregate([
+        {
+          $match: {
+            deletedCheck: false,
+            status: PostStatus.DRAFT,
+            author: req.user.username || req.user.firstName
+          }
+        }
+      ])
+      .skip(parseInt(offset))
+      .limit(parseInt(limit));
+      return draftPosts
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.NOT_FOUND)
     }
   }
 }
