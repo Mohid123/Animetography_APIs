@@ -76,7 +76,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "getBlogById", null);
 __decorate([
-    (0, common_1.Get)('getBlogBySlugName/:slug'),
+    (0, common_1.Get)('getBlogBySlugName/:slugName'),
     __param(0, (0, common_1.Param)('slugName')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

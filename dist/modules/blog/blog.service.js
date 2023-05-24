@@ -116,7 +116,7 @@ let BlogService = class BlogService {
         });
     }
     async getBlogByID(id) {
-        const oldBlog = await this.blogModel.findOne({ _id: id });
+        const oldBlog = await this.blogModel.findOne({ _id: id, deletedCheck: false });
         if (!oldBlog) {
             throw new common_1.NotFoundException('Blog not found');
         }
@@ -125,7 +125,7 @@ let BlogService = class BlogService {
         }
     }
     async getBlogBySlugName(slug) {
-        const oldBlog = await this.blogModel.findOne({ blogSlug: slug });
+        const oldBlog = await this.blogModel.findOne({ blogSlug: slug, deletedCheck: false });
         if (!oldBlog) {
             throw new common_1.NotFoundException('Blog Post not found');
         }
