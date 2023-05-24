@@ -96,6 +96,17 @@ export class BlogService {
     }
   }
 
+  async getBlogBySlugName(slug: string) {
+    const oldBlog = await this.blogModel.findOne({ blogSlug: slug });
+
+    if (!oldBlog) {
+      throw new NotFoundException('Blog Post not found');
+    }
+    else {
+      return oldBlog
+    }
+  }
+
   async updateBlog(blog: any, blogId: string) {
     const oldPost = await this.blogModel.findOne({ _id: blogId });
     if (!oldPost) {

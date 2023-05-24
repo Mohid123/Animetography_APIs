@@ -8,6 +8,7 @@ export const BlogSchema = new mongoose.Schema(
         blogTitle: { type: String, default: '' },
         blogSubtitle: { type: String, default: '' },
         blogContent: { type: String, default: '' },
+        blogSlug: { type: String, default: '' },
         postedDate: { type: Number },
         coverImage: { type: Array, default: [] },
         deletedCheck: { type: Boolean, default: false },

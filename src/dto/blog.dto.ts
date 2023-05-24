@@ -17,6 +17,9 @@ export class BlogDto {
     blogContent: string;
 
     @ApiProperty()
+    blogSlug: string;
+
+    @ApiProperty()
     postedDate: number;
 
     @ApiProperty({
