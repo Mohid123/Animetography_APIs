@@ -5,6 +5,7 @@ export declare const BlogSchema: mongoose.Schema<any, mongoose.Model<any, any, a
     blogTitle: string;
     blogSubtitle: string;
     blogContent: string;
+    blogSlug: string;
     coverImage: any[];
     author: string;
     status: string;

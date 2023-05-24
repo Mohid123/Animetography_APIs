@@ -28,6 +28,9 @@ let BlogController = class BlogController {
     async getBlogById(postID) {
         return await this.blogService.getBlogByID(postID);
     }
+    async getBlogBySlug(slugName) {
+        return await this.blogService.getBlogBySlugName(slugName);
+    }
     async addBlogPost(blogDto) {
         const newBlog = await this.blogService.addBlog(blogDto);
         return newBlog;
@@ -72,6 +75,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "getBlogById", null);
+__decorate([
+    (0, common_1.Get)('getBlogBySlugName/:slug'),
+    __param(0, (0, common_1.Param)('slugName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BlogController.prototype, "getBlogBySlug", null);
 __decorate([
     (0, common_1.Post)('addBlogPost'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

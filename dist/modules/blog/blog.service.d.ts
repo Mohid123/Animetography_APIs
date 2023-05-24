@@ -17,6 +17,9 @@ export declare class BlogService {
     getBlogByID(id: string): Promise<Blog & {
         _id: Types.ObjectId;
     }>;
+    getBlogBySlugName(slug: string): Promise<Blog & {
+        _id: Types.ObjectId;
+    }>;
     updateBlog(blog: any, blogId: string): Promise<{
         message: string;
     }>;

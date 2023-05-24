@@ -124,6 +124,15 @@ let BlogService = class BlogService {
             return oldBlog;
         }
     }
+    async getBlogBySlugName(slug) {
+        const oldBlog = await this.blogModel.findOne({ blogSlug: slug });
+        if (!oldBlog) {
+            throw new common_1.NotFoundException('Blog Post not found');
+        }
+        else {
+            return oldBlog;
+        }
+    }
     async updateBlog(blog, blogId) {
         var e_2, _a;
         const oldPost = await this.blogModel.findOne({ _id: blogId });

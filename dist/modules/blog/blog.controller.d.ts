@@ -35,6 +35,9 @@ export declare class BlogController {
     getBlogById(postID: string): Promise<import("../../interface/blog.interface").Blog & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    getBlogBySlug(slugName: string): Promise<import("../../interface/blog.interface").Blog & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     addBlogPost(blogDto: BlogDto): Promise<import("../../interface/blog.interface").Blog & {
         _id: import("mongoose").Types.ObjectId;
     }>;
