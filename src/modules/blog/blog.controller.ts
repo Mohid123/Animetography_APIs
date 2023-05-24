@@ -30,7 +30,7 @@ export class BlogController {
       return await this.blogService.getBlogByID(postID);
     }
 
-    @Get('getBlogBySlugName/:slug')
+    @Get('getBlogBySlugName/:slugName')
     // @UseGuards(JwtAuthGuard)
     async getBlogBySlug(
       @Param('slugName') slugName: string

@@ -86,7 +86,7 @@ export class BlogService {
   }
 
   async getBlogByID(id: string) {
-    const oldBlog = await this.blogModel.findOne({ _id: id });
+    const oldBlog = await this.blogModel.findOne({ _id: id, deletedCheck: false });
 
     if (!oldBlog) {
       throw new NotFoundException('Blog not found');
@@ -97,8 +97,7 @@ export class BlogService {
   }
 
   async getBlogBySlugName(slug: string) {
-    const oldBlog = await this.blogModel.findOne({ blogSlug: slug });
-
+    const oldBlog = await this.blogModel.findOne({ blogSlug: slug, deletedCheck: false });
     if (!oldBlog) {
       throw new NotFoundException('Blog Post not found');
     }
