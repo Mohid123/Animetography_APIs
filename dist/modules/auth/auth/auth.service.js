@@ -61,7 +61,7 @@ let AuthService = class AuthService {
         return { user, token: token.access_token };
     }
     async signup(loginDto) {
-        var e_1, _a;
+        var _a, e_1, _b, _c;
         const user = await this._usersService.findOne({ email: loginDto.email });
         if (user) {
             throw new common_1.ForbiddenException('Email already exists');
@@ -70,25 +70,32 @@ let AuthService = class AuthService {
         const newUser = new this._usersService(loginDto);
         if (newUser.avatar && newUser.avatar.length) {
             try {
-                for (var _b = __asyncValues(newUser.avatar), _c; _c = await _b.next(), !_c.done;) {
-                    const mediaObj = _c.value;
-                    await new Promise(async (resolve, reject) => {
-                        try {
-                            let mediaUrl = '';
-                            mediaUrl = mediaObj.captureFileURL;
-                            mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(mediaUrl);
-                            resolve({});
-                        }
-                        catch (err) {
-                            reject(err);
-                        }
-                    });
+                for (var _d = true, _e = __asyncValues(newUser.avatar), _f; _f = await _e.next(), _a = _f.done, !_a;) {
+                    _c = _f.value;
+                    _d = false;
+                    try {
+                        const mediaObj = _c;
+                        await new Promise(async (resolve, reject) => {
+                            try {
+                                let mediaUrl = '';
+                                mediaUrl = mediaObj.captureFileURL;
+                                mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(mediaUrl);
+                                resolve({});
+                            }
+                            catch (err) {
+                                reject(err);
+                            }
+                        });
+                    }
+                    finally {
+                        _d = true;
+                    }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) await _a.call(_b);
+                    if (!_d && !_a && (_b = _e.return)) await _b.call(_e);
                 }
                 finally { if (e_1) throw e_1.error; }
             }

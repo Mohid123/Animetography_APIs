@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
-export declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, "type", {
+export declare const UserSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, {}, {}, mongoose.ResolveSchemaOptions<{
+    collection: string;
+}>, {
     email: string;
     password: string;
     _id: string;

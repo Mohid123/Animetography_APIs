@@ -41,8 +41,8 @@ export declare class BlogController {
     addBlogPost(blogDto: BlogDto): Promise<import("../../interface/blog.interface").Blog & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    updateBlogPost(blogDto: BlogDto, postID: string): Promise<{
-        message: string;
+    updateBlogPost(blogDto: BlogDto, postID: string): Promise<import("../../interface/blog.interface").Blog & {
+        _id: import("mongoose").Types.ObjectId;
     }>;
     deleteBlogPost(postID: string): Promise<import("mongodb").UpdateResult>;
     deletePermanently(postID: string): Promise<import("mongodb").DeleteResult>;

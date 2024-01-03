@@ -20,8 +20,8 @@ export declare class BlogService {
     getBlogBySlugName(slug: string): Promise<Blog & {
         _id: Types.ObjectId;
     }>;
-    updateBlog(blog: any, blogId: string): Promise<{
-        message: string;
+    updateBlog(blog: any, blogId: string): Promise<Blog & {
+        _id: Types.ObjectId;
     }>;
     deleteBlogPost(id: string): Promise<import("mongodb").UpdateResult>;
     deletePostPermanently(id: string): Promise<import("mongodb").DeleteResult>;

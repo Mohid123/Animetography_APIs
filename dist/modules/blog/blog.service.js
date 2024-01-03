@@ -38,7 +38,7 @@ let BlogService = class BlogService {
         try {
             limit = parseInt(limit) < 1 ? 10 : limit;
             offset = parseInt(offset) < 0 ? 0 : offset;
-            const totalCount = await this.blogModel.countDocuments({ deletedCheck: false });
+            const totalCount = await this.blogModel.countDocuments({ deletedCheck: false, status: blog_interface_1.PostStatus.PUBLISHED });
             const getItems = await this.blogModel.aggregate([
                 {
                     $match: {
@@ -65,7 +65,7 @@ let BlogService = class BlogService {
         }
     }
     async addBlog(blog) {
-        var e_1, _a;
+        var _a, e_1, _b, _c;
         if (!blog._id) {
             blog._id = new mongoose_2.Types.ObjectId().toString();
         }
@@ -81,25 +81,32 @@ let BlogService = class BlogService {
         const newBlog = new this.blogModel(blog);
         if (newBlog.coverImage && newBlog.coverImage.length) {
             try {
-                for (var _b = __asyncValues(newBlog.coverImage), _c; _c = await _b.next(), !_c.done;) {
-                    const mediaObj = _c.value;
-                    await new Promise(async (resolve, reject) => {
-                        try {
-                            let mediaUrl = '';
-                            mediaUrl = mediaObj.captureFileURL;
-                            mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(mediaUrl);
-                            resolve({});
-                        }
-                        catch (err) {
-                            reject(err);
-                        }
-                    });
+                for (var _d = true, _e = __asyncValues(newBlog.coverImage), _f; _f = await _e.next(), _a = _f.done, !_a;) {
+                    _c = _f.value;
+                    _d = false;
+                    try {
+                        const mediaObj = _c;
+                        await new Promise(async (resolve, reject) => {
+                            try {
+                                let mediaUrl = '';
+                                mediaUrl = mediaObj.captureFileURL;
+                                mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(mediaUrl);
+                                resolve({});
+                            }
+                            catch (err) {
+                                reject(err);
+                            }
+                        });
+                    }
+                    finally {
+                        _d = true;
+                    }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) await _a.call(_b);
+                    if (!_d && !_a && (_b = _e.return)) await _b.call(_e);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
@@ -134,7 +141,7 @@ let BlogService = class BlogService {
         }
     }
     async updateBlog(blog, blogId) {
-        var e_2, _a;
+        var _a, e_2, _b, _c;
         const oldPost = await this.blogModel.findOne({ _id: blogId });
         if (!oldPost) {
             throw new common_1.NotFoundException('Post not found');
@@ -142,34 +149,40 @@ let BlogService = class BlogService {
         if (blog.coverImage && blog.coverImage.length) {
             blog['captureFileURL'] = blog.coverImage[0].captureFileURL;
             try {
-                for (var _b = __asyncValues(blog.coverImage), _c; _c = await _b.next(), !_c.done;) {
-                    const mediaObj = _c.value;
-                    await new Promise(async (resolve, reject) => {
-                        try {
-                            let urlMedia = '';
-                            urlMedia = mediaObj.captureFileURL;
-                            mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(urlMedia);
-                            resolve({});
-                        }
-                        catch (err) {
-                            reject(err);
-                            throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.BAD_REQUEST);
-                        }
-                    });
+                for (var _d = true, _e = __asyncValues(blog.coverImage), _f; _f = await _e.next(), _a = _f.done, !_a;) {
+                    _c = _f.value;
+                    _d = false;
+                    try {
+                        const mediaObj = _c;
+                        await new Promise(async (resolve, reject) => {
+                            try {
+                                let urlMedia = '';
+                                urlMedia = mediaObj.captureFileURL;
+                                mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(urlMedia);
+                                resolve({});
+                            }
+                            catch (err) {
+                                reject(err);
+                                throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.BAD_REQUEST);
+                            }
+                        });
+                    }
+                    finally {
+                        _d = true;
+                    }
                 }
             }
             catch (e_2_1) { e_2 = { error: e_2_1 }; }
             finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) await _a.call(_b);
+                    if (!_d && !_a && (_b = _e.return)) await _b.call(_e);
                 }
                 finally { if (e_2) throw e_2.error; }
             }
         }
         await this.blogModel.updateOne({ _id: blogId }, blog);
-        return {
-            message: 'Blog has been updated succesfully',
-        };
+        const updatedData = await this.blogModel.findOne({ _id: blogId });
+        return updatedData;
     }
     async deleteBlogPost(id) {
         return await this.blogModel.updateOne({ _id: id }, { deletedCheck: true });

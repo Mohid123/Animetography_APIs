@@ -76,7 +76,7 @@ let UserService = class UserService {
         return await this.userModel.updateOne({ _id: id }, { deletedCheck: true });
     }
     async updateUser(user, userId) {
-        var e_1, _a;
+        var _a, e_1, _b, _c;
         const oldUser = await this.userModel.findOne({ _id: userId });
         if (!oldUser) {
             throw new common_1.NotFoundException('User not found');
@@ -84,26 +84,33 @@ let UserService = class UserService {
         if (user.avatar && user.avatar.length) {
             user['captureFileURL'] = user.avatar[0].captureFileURL;
             try {
-                for (var _b = __asyncValues(user.avatar), _c; _c = await _b.next(), !_c.done;) {
-                    const mediaObj = _c.value;
-                    await new Promise(async (resolve, reject) => {
-                        try {
-                            let urlMedia = '';
-                            urlMedia = mediaObj.captureFileURL;
-                            mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(urlMedia);
-                            resolve({});
-                        }
-                        catch (err) {
-                            console.log('Error', err);
-                            reject(err);
-                        }
-                    });
+                for (var _d = true, _e = __asyncValues(user.avatar), _f; _f = await _e.next(), _a = _f.done, !_a;) {
+                    _c = _f.value;
+                    _d = false;
+                    try {
+                        const mediaObj = _c;
+                        await new Promise(async (resolve, reject) => {
+                            try {
+                                let urlMedia = '';
+                                urlMedia = mediaObj.captureFileURL;
+                                mediaObj['blurHash'] = await (0, utils_1.encodeImageToBlurhash)(urlMedia);
+                                resolve({});
+                            }
+                            catch (err) {
+                                console.log('Error', err);
+                                reject(err);
+                            }
+                        });
+                    }
+                    finally {
+                        _d = true;
+                    }
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (_c && !_c.done && (_a = _b.return)) await _a.call(_b);
+                    if (!_d && !_a && (_b = _e.return)) await _b.call(_e);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
