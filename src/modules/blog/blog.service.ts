@@ -18,7 +18,7 @@ export class BlogService {
     try {
       limit = parseInt(limit) < 1 ? 10 : limit;
       offset = parseInt(offset) < 0 ? 0 : offset;
-      const totalCount = await this.blogModel.countDocuments({ deletedCheck: false });
+      const totalCount = await this.blogModel.countDocuments({ deletedCheck: false, status: PostStatus.PUBLISHED });
       const getItems = await this.blogModel.aggregate([
         {
           $match: {
@@ -129,9 +129,8 @@ export class BlogService {
       }
     }
     await this.blogModel.updateOne({ _id: blogId }, blog);
-    return {
-      message: 'Blog has been updated succesfully',
-    };
+    const updatedData = await this.blogModel.findOne({ _id: blogId });
+    return updatedData;
   }
 
   async deleteBlogPost(id: string) {
