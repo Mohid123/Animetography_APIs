@@ -11,6 +11,8 @@ import config from './config';
 import { UserModule } from './modules/user/user/user.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
+import { CronjobsModule } from './modules/cronjobs/cronjobs.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
   }),
    MongooseModule.forRoot(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }),
    AuthModule.forRoot(),
+   ScheduleModule.forRoot(),
    MediaUploadModule,
    BlogModule,
    UserModule,
-   FavoritesModule
+   FavoritesModule,
+   CronjobsModule
   ],
   controllers: [AppController],
   providers: [AppService],
