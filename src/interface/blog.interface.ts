@@ -16,5 +16,6 @@ export interface Blog extends Document {
 
 export enum PostStatus {
     PUBLISHED = 'Published',
-    DRAFT = 'Draft'
+    DRAFT = 'Draft',
+    SCHEDULED = 'Scheduled'
 }
