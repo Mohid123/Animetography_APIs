@@ -396,4 +396,25 @@ export class BlogService {
       throw new HttpException(error, HttpStatus.NOT_FOUND)
     }
   }
+
+  async getUserScheduldPosts(limit: any, offset: any, req: any) {
+    try {
+      offset = parseInt(offset) < 0 ? 0 : offset;
+      limit = parseInt(limit) < 1 ? 10 : limit;
+      const draftPosts = await this.blogModel.aggregate([
+        {
+          $match: {
+            deletedCheck: false,
+            status: PostStatus.SCHEDULED,
+            author: req.user.username || req.user.firstName
+          }
+        }
+      ])
+      .skip(parseInt(offset))
+      .limit(parseInt(limit));
+      return draftPosts
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.NOT_FOUND)
+    }
+  }
 }

@@ -111,4 +111,15 @@ export class BlogController {
     ) {
       return await this.blogService.getUserDrafts(limit, offset, req)
     }
+
+    @Get('getUserScheduledPosts')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    async getSchedules(
+      @Query('limit') limit: number = 10,
+      @Query('offset') offset: number = 0,
+      @Req() req
+    ) {
+      return await this.blogService.getUserScheduldPosts(limit, offset, req)
+    }
 }
