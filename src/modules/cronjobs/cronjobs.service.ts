@@ -11,7 +11,7 @@ export class CronjobsService {
 
   @Cron( CronExpression.EVERY_30_SECONDS )
   async startCronJobForBlogPublish() {
-    const currentDateTime = Math.floor(new Date().getTime() /1000);
+    const currentDateTime = new Date().getTime();
     console.log(currentDateTime)
     const unPublishedPosts = await this.blogModel.find({
         postedDate: { $lte: currentDateTime },
