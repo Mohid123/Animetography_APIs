@@ -13,7 +13,7 @@ export class CronjobsService {
   async startCronJobForBlogPublish() {
     const currentDateTime = new Date();
     const unPublishedPosts = await this.blogModel.find({
-        postedDate: { $gte: currentDateTime },
+        postedDate: { $lte: currentDateTime },
         status: PostStatus.SCHEDULED
     });
     console.log('UNPUBLISHED POSTS: ', unPublishedPosts)
